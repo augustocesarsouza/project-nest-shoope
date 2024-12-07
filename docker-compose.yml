@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres_shoope_nest:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: "postgresNest"
+      POSTGRES_PASSWORD: "123MudarNest"
+    volumes:
+#      - ./postgresData/:/docker-entrypoint-initdb.d/01-basegeografica.sql
+#      - ./postgresData/:/docker-entrypoint-initdb.d/02-basegeografica.sql
+      - postgres_volume_data_shoope_nest:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  redis_shoope_nest:
+     image: redis:6.0.7
+     container_name: redis_shoope_nest
+     restart: always
+     volumes:
+       - redis_volume_data_shoope_nest:/data
+     ports:
+     - 7001:6379
+  redis_insight_shoope_shoope_nest:
+     image: redislabs/redisinsight:latest
+     container_name: redis_insight_shoope_nest
+     restart: always
+     ports:
+       - 5500:8001
+     volumes:
+     - redis_insight_volume_data_shoope_nest:/db
+
+volumes:
+  postgres_volume_data_shoope_nest:
+  redis_volume_data_shoope_nest:
+  redis_insight_volume_data_shoope_nest:
