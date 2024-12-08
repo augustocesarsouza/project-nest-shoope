@@ -12,7 +12,7 @@ services:
 #      - ./postgresData/:/docker-entrypoint-initdb.d/02-basegeografica.sql
       - postgres_volume_data_shoope_nest:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5435:5432
 
   redis_shoope_nest:
      image: redis:6.0.7
@@ -21,13 +21,13 @@ services:
      volumes:
        - redis_volume_data_shoope_nest:/data
      ports:
-     - 7001:6379
+     - 7005:6379
   redis_insight_shoope_shoope_nest:
      image: redislabs/redisinsight:latest
      container_name: redis_insight_shoope_nest
      restart: always
      ports:
-       - 5500:8001
+       - 5505:8001
      volumes:
      - redis_insight_volume_data_shoope_nest:/db
 
