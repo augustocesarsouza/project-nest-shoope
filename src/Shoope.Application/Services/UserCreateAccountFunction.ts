@@ -4,8 +4,8 @@ import { randomBytes, createHash } from 'crypto';
 
 @Injectable()
 export class UserCreateAccountFunction implements IUserCreateAccountFunction {
-  HashPassword(phone: string, salt: Uint8Array): string {
-    const passwordBytes = Buffer.from(phone, 'utf-8');
+  HashPassword(password: string, salt: Uint8Array): string {
+    const passwordBytes = Buffer.from(password, 'utf-8');
     const saltedPassword = Buffer.concat([passwordBytes, salt]);
 
     // Usando SHA-256 para hashear o password + salt

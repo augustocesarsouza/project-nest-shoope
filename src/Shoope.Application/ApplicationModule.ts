@@ -9,6 +9,10 @@ import { RepositoriesModule } from 'src/Shoope.Infra.Data/RepositoriesModule';
 import { IClodinaryUti } from 'src/Shoope.Infra.Data/UtilityExternal/Interface/IClodinaryUti';
 import { ClodinaryUti } from 'src/Shoope.Infra.Data/UtilityExternal/ClodinaryUti';
 import { ConfigModule } from '@nestjs/config';
+import { IUserAuthenticationService } from './Services/Interfaces/IUserAuthenticationService';
+import { UserAuthenticationService } from './Services/UserAuthenticationService';
+import { TokenGeneratorUser } from 'src/Shoope.Infra.Data/Authentication/TokenGeneratorUser';
+import { ITokenGeneratorUser } from 'src/Shoope.Domain/Authentication/ITokenGeneratorUser';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule.forRoot()],
@@ -16,6 +20,10 @@ import { ConfigModule } from '@nestjs/config';
     {
       provide: IUserManagementService,
       useClass: UserManagementService,
+    },
+    {
+      provide: IUserAuthenticationService,
+      useClass: UserAuthenticationService,
     },
     {
       provide: IUserCreateAccountFunction,
@@ -29,12 +37,18 @@ import { ConfigModule } from '@nestjs/config';
       provide: IClodinaryUti,
       useClass: ClodinaryUti,
     },
+    {
+      provide: ITokenGeneratorUser,
+      useClass: TokenGeneratorUser,
+    },
   ],
   exports: [
     IUserManagementService,
+    IUserAuthenticationService,
     IUserCreateAccountFunction,
     IUserMap,
     IClodinaryUti,
+    ITokenGeneratorUser,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })

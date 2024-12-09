@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IUserCreateAccountFunction } from './Interfaces/IUserCreateAccountFunction';
 import { User } from 'src/Shoope.Domain/Entities/User';
 import { IClodinaryUti } from 'src/Shoope.Infra.Data/UtilityExternal/Interface/IClodinaryUti';
+import { CloudinaryResult } from 'src/Shoope.Infra.Data/ReturnDTO/CloudinaryResult';
 
 @Injectable()
 export class UserManagementService implements IUserManagementService {
@@ -118,9 +119,83 @@ export class UserManagementService implements IUserManagementService {
     return prefix + randomString;
   }
 
-  UpdateUserAll(userUpdateAllDTO: UserUpdateAllDTO): Promise<ResultService<UserDTO | null>> {
-    throw new Error('Method not implemented.' + userUpdateAllDTO);
+  async UpdateUserAll(userUpdateAllDTO: UserUpdateAllDTO): Promise<ResultService<UserDTO | null>> {
+    try {
+      if (userUpdateAllDTO === null)
+        return ResultService.fail<UserDTO>('error DTO Informed Is null');
+
+      const userToUpdate = await this._userRepository.GetUserById(userUpdateAllDTO.id);
+
+      if (userToUpdate === null) return ResultService.fail<UserDTO>('Error UserToUpdate Is null');
+
+      if (userUpdateAllDTO.base64StringImage !== null) {
+        const deleteFound = await this.WhichFoundDeleteCloudinary(userToUpdate.userImage, 'image');
+
+        if (!deleteFound.isSuccess) return ResultService.fail<UserDTO | null>(deleteFound.message);
+
+        const deleteCloudinary = deleteFound.data as CloudinaryResult;
+
+        if (!deleteCloudinary.deleteSuccessfully)
+          return ResultService.fail<UserDTO | null>('Failed to delete media from Cloudinary');
+
+        const result = await this._clodinaryUti.CreateMedia(
+          userUpdateAllDTO.base64StringImage,
+          'img-user',
+          320,
+          320,
+        );
+
+        if (!result.createdSuccessfully)
+          return ResultService.fail<UserDTO | null>(
+            'Invalid media type. Only images and videos are supported.',
+          );
+
+        if (result.imgUrl === null || result.publicId === null)
+          return ResultService.fail<UserDTO | null>('Error creating image on Cloudinary');
+
+        userToUpdate.name = userUpdateAllDTO.name;
+        userToUpdate.email = userUpdateAllDTO.email;
+        userToUpdate.gender = userUpdateAllDTO.gender;
+        userToUpdate.phone = userUpdateAllDTO.phone;
+        userToUpdate.userImage = result.imgUrl;
+
+        const updateUser = await this._userRepository.Update(userToUpdate);
+
+        if (updateUser === null)
+          return ResultService.fail<UserDTO | null>('error updateUser is null');
+
+        return ResultService.ok<UserDTO>(this._userMap.transformToDTO(updateUser));
+      } else {
+        userToUpdate.name = userUpdateAllDTO.name;
+        userToUpdate.email = userUpdateAllDTO.email;
+        userToUpdate.gender = userUpdateAllDTO.gender;
+        userToUpdate.phone = userUpdateAllDTO.phone;
+        userToUpdate.userImage = userToUpdate.userImage;
+      }
+    } catch (error) {
+      return ResultService.fail(error.message || 'An unexpected error occurred');
+    }
   }
+
+  private WhichFoundDeleteCloudinary = async (
+    userImage: string,
+    resourceType: string,
+  ): Promise<ResultService<UserDTO> | ResultService<CloudinaryResult>> => {
+    const match = userImage.match(/upload\/(?:v\d+\/)?(.+)/);
+    const extractedPath = match ? match[1] : null;
+    const index = extractedPath.lastIndexOf('.');
+
+    if (!extractedPath) return ResultService.fail<UserDTO | null>('Image path not found');
+
+    const pathWithoutExtension = index !== -1 ? extractedPath.slice(0, index) : extractedPath;
+
+    const deleteCloudinary = await this._clodinaryUti.DeleteMediaCloudinary(
+      pathWithoutExtension,
+      resourceType,
+    );
+
+    return ResultService.ok(deleteCloudinary);
+  };
 
   UpdateUser(userUpdateAllDTO: UserUpdateAllDTO): Promise<ResultService<UserDTO | null>> {
     throw new Error('Method not implemented.' + userUpdateAllDTO);
@@ -132,19 +207,11 @@ export class UserManagementService implements IUserManagementService {
 
       if (userDelete === null) return ResultService.fail<UserDTO | null>('User not found');
 
-      const userImage = userDelete.userImage;
-      const match = userImage.match(/upload\/(?:v\d+\/)?(.+)/);
-      const extractedPath = match ? match[1] : null;
-      const index = extractedPath.lastIndexOf('.');
+      const deleteFound = await this.WhichFoundDeleteCloudinary(userDelete.userImage, 'image');
 
-      if (!extractedPath) return ResultService.fail<UserDTO | null>('Image path not found');
+      if (!deleteFound.isSuccess) return ResultService.fail<UserDTO | null>(deleteFound.message);
 
-      const pathWithoutExtension = index !== -1 ? extractedPath.slice(0, index) : extractedPath;
-
-      const deleteCloudinary = await this._clodinaryUti.DeleteMediaCloudinary(
-        pathWithoutExtension,
-        'image',
-      );
+      const deleteCloudinary = deleteFound.data as CloudinaryResult;
 
       if (!deleteCloudinary.deleteSuccessfully) {
         return ResultService.fail<UserDTO | null>('Failed to delete media from Cloudinary');

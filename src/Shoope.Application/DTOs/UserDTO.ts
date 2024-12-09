@@ -14,6 +14,10 @@ export class UserDTO {
   constructor(init?: Partial<UserDTO>) {
     Object.assign(this, init);
   }
+
+  public SetToken(token?: string) {
+    this.token = token;
+  }
 }
 // constructor(
 //   id: string,

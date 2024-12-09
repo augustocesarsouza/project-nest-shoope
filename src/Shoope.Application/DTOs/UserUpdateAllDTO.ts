@@ -11,10 +11,8 @@ export class UserUpdateAllDTO {
   gender?: string;
   @IsNotEmpty()
   phone?: string;
-  @IsNotEmpty()
   cpf?: string;
   birthDate?: Date;
-  @IsNotEmpty()
   base64StringImage?: string;
 
   constructor(init?: Partial<UserUpdateAllDTO>) {
