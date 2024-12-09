@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { IUserManagementService } from 'src/Shoope.Application/Services/Interfaces/IUserManagementService';
 import { IBaseController } from '../ControllersInterfaces/IBaseController';
 import { ICurrentUser } from 'src/Shoope.Domain/Authentication/ICurrentUser';
@@ -42,5 +42,24 @@ export class UserController {
     }
 
     return { statusCode: HttpStatus.BAD_REQUEST, data: result };
+  }
+
+  @Delete('delete/:userId')
+  @HttpCode(HttpStatus.OK)
+  async deleteUser(@Param('userId') userId: string) {
+    // const userAuth = this._baseController.Validator(this._currentUser);
+
+    // if (!userAuth) {
+    //   return this._baseController.Forbidden();
+    // }
+
+    const result = await this._userManagementService.DeleteUser(userId);
+
+    if (result.isSuccess) {
+      return { statusCode: HttpStatus.OK, result };
+      // return { statusCode: HttpStatus.OK, data: result };
+    }
+
+    return { statusCode: HttpStatus.BAD_REQUEST, result };
   }
 }

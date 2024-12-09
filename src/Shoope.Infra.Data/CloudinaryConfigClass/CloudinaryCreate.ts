@@ -1,4 +1,7 @@
 export class CloudinaryCreate {
-  public PublicId?: string;
-  public ImgUrl?: string;
+  public publicId?: string;
+  public imgUrl?: string;
+  public createdSuccessfully: boolean;
+
+  constructor() {}
 }

@@ -28,6 +28,27 @@ export class UserRepository extends IUserRepository {
 
     return user;
   }
+
+  async GetUserByIdForDeleteImg(id: string): Promise<User | null> {
+    const user = await this._prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: false,
+        email: false,
+        gender: false,
+        phone: false,
+        passwordHash: false,
+        salt: false,
+        cpf: false,
+        birthDate: false,
+        userImage: true,
+      },
+    });
+
+    return user;
+  }
+
   async GetUserByPhoneInfoUpdate(phone: string): Promise<User | null> {
     const user = await this._prisma.user.findFirst({
       where: {

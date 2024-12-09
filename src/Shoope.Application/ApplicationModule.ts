@@ -6,9 +6,12 @@ import { UserCreateAccountFunction } from './Services/UserCreateAccountFunction'
 import { IUserMap } from './Mappings/IMappings/IUserMap';
 import { UserMap } from './Mappings/UserMap';
 import { RepositoriesModule } from 'src/Shoope.Infra.Data/RepositoriesModule';
+import { IClodinaryUti } from 'src/Shoope.Infra.Data/UtilityExternal/Interface/IClodinaryUti';
+import { ClodinaryUti } from 'src/Shoope.Infra.Data/UtilityExternal/ClodinaryUti';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [RepositoriesModule],
+  imports: [RepositoriesModule, ConfigModule.forRoot()],
   providers: [
     {
       provide: IUserManagementService,
@@ -22,11 +25,16 @@ import { RepositoriesModule } from 'src/Shoope.Infra.Data/RepositoriesModule';
       provide: IUserMap,
       useClass: UserMap,
     },
+    {
+      provide: IClodinaryUti,
+      useClass: ClodinaryUti,
+    },
   ],
   exports: [
     IUserManagementService,
     IUserCreateAccountFunction,
     IUserMap,
+    IClodinaryUti,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })

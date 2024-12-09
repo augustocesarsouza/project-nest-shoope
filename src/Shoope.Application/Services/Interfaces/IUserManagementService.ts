@@ -10,4 +10,5 @@ export abstract class IUserManagementService {
     userUpdateAllDTO: UserUpdateAllDTO,
   ): Promise<ResultService<UserDTO | null>>;
   abstract UpdateUser(userUpdateAllDTO: UserUpdateAllDTO): Promise<ResultService<UserDTO | null>>;
+  abstract DeleteUser(userId: string): Promise<ResultService<UserDTO | null>>;
 }

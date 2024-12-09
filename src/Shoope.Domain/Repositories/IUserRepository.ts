@@ -2,6 +2,7 @@ import { User } from '../Entities/User';
 
 export abstract class IUserRepository {
   abstract GetUserById(id: string): Promise<User | null>;
+  abstract GetUserByIdForDeleteImg(id: string): Promise<User | null>;
   abstract GetUserByPhoneInfoUpdate(phone: string): Promise<User | null>;
   abstract GetUserByIdInfoUser(id: string): Promise<User | null>;
   abstract GetUserByPhone(phone: string): Promise<User | null>;
