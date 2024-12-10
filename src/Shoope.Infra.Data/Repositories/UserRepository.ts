@@ -10,7 +10,7 @@ export class UserRepository extends IUserRepository {
   }
 
   async GetUserById(id: string): Promise<User | null> {
-    const user = await this._prisma.user.findUnique({
+    const userData = await this._prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -26,11 +26,29 @@ export class UserRepository extends IUserRepository {
       },
     });
 
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      userData.email,
+      userData.gender,
+      userData.phone,
+      userData.passwordHash,
+      userData.salt,
+      userData.cpf,
+      userData.birthDate,
+      userData.userImage,
+    );
+
     return user;
   }
 
   async GetUserByIdForDeleteImg(id: string): Promise<User | null> {
-    const user = await this._prisma.user.findUnique({
+    const userData = await this._prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -46,11 +64,29 @@ export class UserRepository extends IUserRepository {
       },
     });
 
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      userData.userImage,
+    );
+
     return user;
   }
 
   async GetUserByPhoneInfoUpdate(phone: string): Promise<User | null> {
-    const user = await this._prisma.user.findFirst({
+    const userData = await this._prisma.user.findFirst({
       where: {
         phone: phone,
       },
@@ -68,10 +104,28 @@ export class UserRepository extends IUserRepository {
       },
     });
 
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      userData.email,
+      userData.gender,
+      userData.phone,
+      userData.passwordHash,
+      userData.salt,
+      userData.cpf,
+      userData.birthDate,
+      userData.userImage,
+    );
+
     return user;
   }
   async GetUserByIdInfoUser(id: string): Promise<User | null> {
-    const user = await this._prisma.user.findUnique({
+    const userData = await this._prisma.user.findUnique({
       where: {
         id,
       },
@@ -89,10 +143,28 @@ export class UserRepository extends IUserRepository {
       },
     });
 
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      userData.email,
+      userData.gender,
+      userData.phone,
+      null,
+      null,
+      userData.cpf,
+      userData.birthDate,
+      userData.userImage,
+    );
+
     return user;
   }
   async GetUserByPhone(phone: string): Promise<User | null> {
-    const user = await this._prisma.user.findFirst({
+    const userData = await this._prisma.user.findFirst({
       where: {
         phone: phone,
       },
@@ -110,11 +182,29 @@ export class UserRepository extends IUserRepository {
       },
     });
 
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      userData.userImage,
+    );
+
     return user;
   }
 
   async GetUserByName(name: string): Promise<User | null> {
-    const user = await this._prisma.user.findFirst({
+    const userData = await this._prisma.user.findFirst({
       where: {
         name: name,
       },
@@ -132,10 +222,28 @@ export class UserRepository extends IUserRepository {
       },
     });
 
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      userData.userImage,
+    );
+
     return user;
   }
   async GetIfUserExistEmail(email: string): Promise<User | null> {
-    const user = await this._prisma.user.findFirst({
+    const userData = await this._prisma.user.findFirst({
       where: {
         email: email,
       },
@@ -153,10 +261,28 @@ export class UserRepository extends IUserRepository {
       },
     });
 
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      userData.userImage,
+    );
+
     return user;
   }
   async GetUserInfoToLogin(phone: string): Promise<User | null> {
-    const user = await this._prisma.user.findFirst({
+    const userData = await this._prisma.user.findFirst({
       where: {
         phone: phone,
       },
@@ -174,11 +300,29 @@ export class UserRepository extends IUserRepository {
       },
     });
 
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      userData.email,
+      null,
+      userData.phone,
+      userData.passwordHash,
+      userData.salt,
+      null,
+      null,
+      userData.userImage,
+    );
+
     return user;
   }
 
   async Create(entity: User): Promise<User | null> {
-    const user = await this._prisma.user.create({
+    const userData = await this._prisma.user.create({
       data: {
         id: entity.id,
         name: entity.name,
@@ -192,12 +336,30 @@ export class UserRepository extends IUserRepository {
         userImage: entity.userImage,
       },
     });
+
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      userData.email,
+      userData.gender,
+      userData.phone,
+      userData.passwordHash,
+      userData.salt,
+      userData.cpf,
+      userData.birthDate,
+      userData.userImage,
+    );
 
     return user;
   }
 
   async Update(entity: User): Promise<User | null> {
-    const user = await this._prisma.user.update({
+    const userData = await this._prisma.user.update({
       where: {
         id: entity.id,
       },
@@ -213,14 +375,50 @@ export class UserRepository extends IUserRepository {
         userImage: entity.userImage,
       },
     });
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      userData.email,
+      userData.gender,
+      userData.phone,
+      userData.passwordHash,
+      userData.salt,
+      userData.cpf,
+      userData.birthDate,
+      userData.userImage,
+    );
+
     return user;
   }
   async Delete(id: string): Promise<User | null> {
-    const user = await this._prisma.user.delete({
+    const userData = await this._prisma.user.delete({
       where: {
         id: id, // Supondo que `id` é a chave primária.
       },
     });
+    if (!userData) {
+      return null; // Retorna null se o usuário não for encontrado
+    }
+
+    // Cria uma instância de User a partir dos dados obtidos
+    const user = new User(
+      userData.id,
+      userData.name,
+      userData.email,
+      userData.gender,
+      userData.phone,
+      userData.passwordHash,
+      userData.salt,
+      userData.cpf,
+      userData.birthDate,
+      userData.userImage,
+    );
+
     return user;
   }
 }

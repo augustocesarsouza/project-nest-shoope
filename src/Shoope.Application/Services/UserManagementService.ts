@@ -11,6 +11,7 @@ import { IUserCreateAccountFunction } from './Interfaces/IUserCreateAccountFunct
 import { User } from 'src/Shoope.Domain/Entities/User';
 import { IClodinaryUti } from 'src/Shoope.Infra.Data/UtilityExternal/Interface/IClodinaryUti';
 import { CloudinaryResult } from 'src/Shoope.Infra.Data/ReturnDTO/CloudinaryResult';
+import { UserUpdateFillDTO } from '../DTOs/UserUpdateFillDTO';
 
 @Injectable()
 export class UserManagementService implements IUserManagementService {
@@ -23,7 +24,7 @@ export class UserManagementService implements IUserManagementService {
 
   async CheckEmailAlreadyExists(phone: string): Promise<ResultService<UserDTO | null>> {
     try {
-      const user = await this._userRepository.GetUserByPhone(phone); // Método que busca o usuário no banco
+      const user = await this._userRepository.GetUserByPhone(phone);
 
       if (!user) {
         return ResultService.fail<UserDTO | null>('User not found');
@@ -197,8 +198,43 @@ export class UserManagementService implements IUserManagementService {
     return ResultService.ok(deleteCloudinary);
   };
 
-  UpdateUser(userUpdateAllDTO: UserUpdateAllDTO): Promise<ResultService<UserDTO | null>> {
-    throw new Error('Method not implemented.' + userUpdateAllDTO);
+  async UpdateUser(userUpdateFillDTO: UserUpdateFillDTO): Promise<ResultService<UserDTO | null>> {
+    try {
+      if (userUpdateFillDTO === null)
+        return ResultService.fail<UserDTO | null>('error dto is null');
+
+      const { cpf, birthDate, userId } = userUpdateFillDTO;
+
+      if (userUpdateFillDTO.cpf.length > 11 || userUpdateFillDTO.cpf.length < 11)
+        return ResultService.fail<UserDTO | null>('Cpf Is not a Cpf Valid');
+
+      const userToUpdate = await this._userRepository.GetUserById(userId);
+
+      if (userToUpdate === null) return ResultService.fail<UserDTO | null>('User not found');
+
+      const dateParts = birthDate.split('/');
+      const day = parseInt(dateParts[0], 10);
+      const month = parseInt(dateParts[1], 10) - 1; // Meses no JS são baseados em 0
+      const year = parseInt(dateParts[2], 10);
+
+      const birthDateObject = new Date(year, month, day);
+
+      if (isNaN(birthDateObject.getTime())) {
+        return ResultService.fail<UserDTO | null>('BirthDate is invalid');
+      }
+
+      userToUpdate.cpf = cpf;
+      userToUpdate.birthDate = birthDateObject;
+
+      const updatedUser = await this._userRepository.Update(userToUpdate);
+      if (!updatedUser) {
+        return ResultService.fail<UserDTO | null>('Error: User update failed');
+      }
+
+      return ResultService.ok<UserDTO>(this._userMap.transformToDTO(updatedUser));
+    } catch (error) {
+      return ResultService.fail<UserDTO | null>(error.message || 'An unexpected error occurred');
+    }
   }
 
   async DeleteUser(userId: string): Promise<ResultService<UserDTO | null>> {

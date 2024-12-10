@@ -7,6 +7,8 @@ import { UserDTO } from '../DTOs/UserDTO';
 import { UserLoginDTO } from '../DTOs/UserLoginDTO';
 import { Injectable } from '@nestjs/common';
 import { ITokenGeneratorUser } from 'src/Shoope.Domain/Authentication/ITokenGeneratorUser';
+import { UserChangePasswordDTO } from '../DTOs/UserChangePasswordDTO';
+import { UserPasswordUpdateDTO } from '../DTOs/UserPasswordUpdateDTO';
 
 @Injectable()
 export class UserAuthenticationService implements IUserAuthenticationService {
@@ -16,6 +18,18 @@ export class UserAuthenticationService implements IUserAuthenticationService {
     private readonly _userCreateAccountFunction: IUserCreateAccountFunction,
     private readonly _tokenGeneratorUser: ITokenGeneratorUser,
   ) {}
+
+  async GetByIdInfoUser(id: string): Promise<ResultService<UserDTO | null>> {
+    try {
+      const user = await this._userRepository.GetUserByIdInfoUser(id);
+
+      if (!user) return ResultService.fail<UserDTO | null>('User not found');
+
+      return ResultService.ok<UserDTO>(this._userMap.transformToDTO(user));
+    } catch (error) {
+      return ResultService.fail<UserDTO | null>(error.message || 'An unexpected error occurred');
+    }
+  }
 
   async Login(phone: string, password: string): Promise<ResultService<UserLoginDTO>> {
     try {
@@ -56,6 +70,35 @@ export class UserAuthenticationService implements IUserAuthenticationService {
       return ResultService.ok<UserLoginDTO>(userLoginDTO);
     } catch (err) {
       return ResultService.fail<UserLoginDTO>(err);
+    }
+  }
+
+  async ChangePasswordUser(
+    userChangePasswordDTO: UserChangePasswordDTO,
+  ): Promise<ResultService<UserPasswordUpdateDTO | null>> {
+    try {
+      const user = await this._userRepository.GetUserByPhoneInfoUpdate(userChangePasswordDTO.phone);
+
+      if (!user) return ResultService.fail<UserPasswordUpdateDTO | null>('User not found');
+
+      const newPassword = userChangePasswordDTO.confirmPassword;
+      const saltBytes = this._userCreateAccountFunction.GenerateSalt();
+      const base64Salt = Buffer.from(saltBytes).toString('base64');
+      const hashedPassword = this._userCreateAccountFunction.HashPassword(newPassword, saltBytes);
+
+      user.SetPasswordHash(hashedPassword);
+      user.SetSalt(base64Salt);
+
+      const userUpdate = await this._userRepository.Update(user);
+
+      if (userUpdate == null)
+        return ResultService.fail<UserPasswordUpdateDTO>('Erro userUpdate it is null');
+
+      return ResultService.ok<UserPasswordUpdateDTO>(new UserPasswordUpdateDTO(true));
+    } catch (error) {
+      return ResultService.fail<UserPasswordUpdateDTO | null>(
+        error.message || 'An unexpected error occurred',
+      );
     }
   }
 }
