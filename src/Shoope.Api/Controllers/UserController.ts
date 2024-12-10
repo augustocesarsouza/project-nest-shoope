@@ -18,6 +18,8 @@ import { Response } from 'express';
 import { UserAuthGuard } from '../UserAuthGuardJwt/UserAuthGuard';
 import { UserUpdateFillDTO } from 'src/Shoope.Application/DTOs/UserUpdateFillDTO';
 import { UserChangePasswordDTO } from 'src/Shoope.Application/DTOs/UserChangePasswordDTO';
+import { CodeSendEmailUserDTO } from 'src/Shoope.Application/DTOs/CodeSendEmailUserDTO';
+import { UserConfirmCodeEmailDTO } from 'src/Shoope.Application/DTOs/UserConfirmCodeEmailDTO';
 
 @Controller('v1/public/user')
 export class UserController {
@@ -72,6 +74,63 @@ export class UserController {
       });
     }
 
+    return res.status(HttpStatus.BAD_REQUEST).json({
+      data: result,
+    });
+  }
+
+  @Get('verify-password/:phone/:password')
+  async VerifyPasswordUser(
+    @Param('phone') phone: string,
+    @Param('password') password: string,
+    @Res() res: Response,
+  ) {
+    const result = await this._userAuthenticationService.VerifyPasswordUser(phone, password);
+
+    if (result.isSuccess) {
+      return res.status(HttpStatus.OK).json({
+        data: result.data,
+      });
+    }
+
+    return res.status(HttpStatus.BAD_REQUEST).json({
+      data: result,
+    });
+  }
+
+  @Post('verific')
+  async Verfic(@Body() userConfirmCodeEmailDTO: UserConfirmCodeEmailDTO, @Res() res: Response) {
+    const result =
+      await this._userAuthenticationService.VerficEmailAlreadySetUp(userConfirmCodeEmailDTO);
+
+    if (result.isSuccess) {
+      // return { statusCode: HttpStatus.OK, data: result };
+      return res.status(HttpStatus.OK).json({
+        data: result.data,
+      });
+    }
+
+    // return { statusCode: HttpStatus.BAD_REQUEST, data: result };
+    return res.status(HttpStatus.BAD_REQUEST).json({
+      data: result,
+    });
+  }
+
+  @Post('confirm-email-send-code')
+  async ConfirmEmailSendCode(
+    @Body() codeSendEmailUserDTO: CodeSendEmailUserDTO,
+    @Res() res: Response,
+  ) {
+    const result = await this._userAuthenticationService.SendCodeEmail(codeSendEmailUserDTO);
+
+    if (result.isSuccess) {
+      // return { statusCode: HttpStatus.OK, data: result };
+      return res.status(HttpStatus.OK).json({
+        data: result.data,
+      });
+    }
+
+    // return { statusCode: HttpStatus.BAD_REQUEST, data: result };
     return res.status(HttpStatus.BAD_REQUEST).json({
       data: result,
     });

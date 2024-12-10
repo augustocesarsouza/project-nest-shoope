@@ -26,4 +26,8 @@ export class UserDTO {
   public SetSalt(salt?: string) {
     this.salt = salt;
   }
+
+  public GetPasswordHash(): string {
+    return this.passwordHash;
+  }
 }

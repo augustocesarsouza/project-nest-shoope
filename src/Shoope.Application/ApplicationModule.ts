@@ -13,10 +13,12 @@ import { IUserAuthenticationService } from './Services/Interfaces/IUserAuthentic
 import { UserAuthenticationService } from './Services/UserAuthenticationService';
 import { TokenGeneratorUser } from 'src/Shoope.Infra.Data/Authentication/TokenGeneratorUser';
 import { ITokenGeneratorUser } from 'src/Shoope.Domain/Authentication/ITokenGeneratorUser';
+import { CodeRandomDictionary } from './CodeRandomUser/CodeRandomDictionary';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule.forRoot()],
   providers: [
+    CodeRandomDictionary,
     {
       provide: IUserManagementService,
       useClass: UserManagementService,

@@ -9,6 +9,9 @@ import { Injectable } from '@nestjs/common';
 import { ITokenGeneratorUser } from 'src/Shoope.Domain/Authentication/ITokenGeneratorUser';
 import { UserChangePasswordDTO } from '../DTOs/UserChangePasswordDTO';
 import { UserPasswordUpdateDTO } from '../DTOs/UserPasswordUpdateDTO';
+import { UserConfirmCodeEmailDTO } from '../DTOs/UserConfirmCodeEmailDTO';
+import { CodeRandomDictionary } from '../CodeRandomUser/CodeRandomDictionary';
+import { CodeSendEmailUserDTO } from '../DTOs/CodeSendEmailUserDTO';
 
 @Injectable()
 export class UserAuthenticationService implements IUserAuthenticationService {
@@ -17,7 +20,88 @@ export class UserAuthenticationService implements IUserAuthenticationService {
     private readonly _userMap: IUserMap,
     private readonly _userCreateAccountFunction: IUserCreateAccountFunction,
     private readonly _tokenGeneratorUser: ITokenGeneratorUser,
+    private readonly codeRandomDictionary: CodeRandomDictionary,
   ) {}
+
+  async VerficEmailAlreadySetUp(
+    userConfirmCodeEmailDTO: UserConfirmCodeEmailDTO,
+  ): Promise<ResultService<UserDTO | null>> {
+    try {
+      if (!userConfirmCodeEmailDTO)
+        return ResultService.fail<UserDTO | null>('userConfirmCodeEmailDTO is null');
+
+      if (
+        this.codeRandomDictionary.contains(
+          userConfirmCodeEmailDTO.userId,
+          Number(userConfirmCodeEmailDTO.code),
+        )
+      ) {
+        const user = await this._userRepository.GetUserById(userConfirmCodeEmailDTO.userId);
+
+        if (!user) return ResultService.fail<UserDTO | null>('user not found');
+
+        user.email = userConfirmCodeEmailDTO.email;
+
+        const userUpdate = await this._userRepository.Update(user);
+        this.codeRandomDictionary.remove(userConfirmCodeEmailDTO.userId);
+
+        return ResultService.ok<UserDTO>(this._userMap.transformToDTO(userUpdate));
+      } else {
+        return ResultService.fail<UserDTO>('Error Code Not Found');
+      }
+    } catch (error) {
+      return ResultService.fail<UserDTO | null>(error.message || 'An unexpected error occurred');
+    }
+  }
+
+  async SendCodeEmail(
+    codeSendEmailUserDTO: CodeSendEmailUserDTO,
+  ): Promise<ResultService<CodeSendEmailUserDTO | null>> {
+    try {
+      if (!codeSendEmailUserDTO)
+        return ResultService.fail<CodeSendEmailUserDTO | null>('codeSendEmailUserDTO is null');
+
+      const user = await this._userRepository.GetUserByName(codeSendEmailUserDTO.name);
+
+      if (!user) ResultService.fail<CodeSendEmailUserDTO | null>('Error User it is null');
+
+      const checkIfUserExist = await this._userRepository.GetIfUserExistEmail(
+        codeSendEmailUserDTO.email,
+      );
+
+      if (checkIfUserExist != null)
+        return ResultService.ok(
+          new CodeSendEmailUserDTO({
+            code: null,
+            codeSendToEmailSuccessfully: false,
+            userAlreadyExist: true,
+            name: null,
+            email: null,
+          }),
+        );
+
+      user.email = codeSendEmailUserDTO.email;
+
+      const randomCode = this.GerarNumeroAleatorio();
+      this.codeRandomDictionary.add(user.id.toString(), randomCode);
+
+      // _sendEmailUser.SendCodeRandom(user, randomCode);
+
+      const codeSend = new CodeSendEmailUserDTO({
+        code: randomCode.toString(),
+        codeSendToEmailSuccessfully: true,
+        userAlreadyExist: false,
+        name: null,
+        email: null,
+      });
+
+      return ResultService.ok<CodeSendEmailUserDTO | null>(codeSend);
+    } catch (error) {
+      return ResultService.fail<CodeSendEmailUserDTO | null>(
+        error.message || 'An unexpected error occurred',
+      );
+    }
+  }
 
   async GetByIdInfoUser(id: string): Promise<ResultService<UserDTO | null>> {
     try {
@@ -64,8 +148,8 @@ export class UserAuthenticationService implements IUserAuthenticationService {
       userReturnToFrontend.SetToken(token.data.acess_Token);
 
       const userLoginDTO = new UserLoginDTO();
-      userLoginDTO.PasswordIsCorrect = true;
-      userLoginDTO.UserDTO = userReturnToFrontend;
+      userLoginDTO.passwordIsCorrect = true;
+      userLoginDTO.userDTO = userReturnToFrontend;
 
       return ResultService.ok<UserLoginDTO>(userLoginDTO);
     } catch (err) {
@@ -100,5 +184,66 @@ export class UserAuthenticationService implements IUserAuthenticationService {
         error.message || 'An unexpected error occurred',
       );
     }
+  }
+
+  async VerifyPasswordUser(
+    phone: string,
+    password: string,
+  ): Promise<ResultService<UserLoginDTO | null>> {
+    return await this.VerifyPasswordUserIsValid(phone, password);
+  }
+
+  private async VerifyPasswordUserIsValid(
+    phone: string,
+    password: string,
+  ): Promise<ResultService<UserLoginDTO | null>> {
+    try {
+      const user = await this._userRepository.GetUserInfoToLogin(phone);
+
+      if (!user) return ResultService.fail<UserLoginDTO | null>('User not found');
+
+      const storedHashedPassword = user.GetPasswordHash();
+
+      const storedSaltBytes = Buffer.from(user.salt, 'base64');
+
+      const enteredPasswordHash = this._userCreateAccountFunction.HashPassword(
+        password,
+        storedSaltBytes,
+      );
+
+      const userLoginDTO = new UserLoginDTO();
+
+      if (enteredPasswordHash === storedHashedPassword) {
+        const userReturnToFrontend = new UserDTO({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          gender: user.gender,
+          phone: user.phone,
+          cpf: user.cpf,
+          birthDate: user.birthDate,
+          userImage: user.userImage,
+        });
+
+        userLoginDTO.passwordIsCorrect = true;
+        userLoginDTO.userDTO = userReturnToFrontend;
+        return ResultService.ok<UserLoginDTO>(userLoginDTO);
+      } else {
+        userLoginDTO.passwordIsCorrect = false;
+        userLoginDTO.userDTO = null;
+        return ResultService.failWithData<UserLoginDTO>(userLoginDTO);
+      }
+    } catch (error) {
+      return ResultService.fail<UserLoginDTO | null>(
+        error.message || 'An unexpected error occurred',
+      );
+    }
+  }
+
+  private GerarNumeroAleatorio(): number {
+    const min = 100000;
+    const max = 1000000;
+
+    return Math.floor(Math.random() * (max - min)) + min;
   }
 }
