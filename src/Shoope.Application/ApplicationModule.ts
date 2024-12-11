@@ -16,7 +16,7 @@ import { ITokenGeneratorUser } from 'src/Shoope.Domain/Authentication/ITokenGene
 import { CodeRandomDictionary } from './CodeRandomUser/CodeRandomDictionary';
 
 @Module({
-  imports: [RepositoriesModule, ConfigModule.forRoot()],
+  imports: [RepositoriesModule, ConfigModule],
   providers: [
     CodeRandomDictionary,
     {

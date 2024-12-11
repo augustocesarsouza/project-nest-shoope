@@ -12,6 +12,7 @@ import { UserPasswordUpdateDTO } from '../DTOs/UserPasswordUpdateDTO';
 import { UserConfirmCodeEmailDTO } from '../DTOs/UserConfirmCodeEmailDTO';
 import { CodeRandomDictionary } from '../CodeRandomUser/CodeRandomDictionary';
 import { CodeSendEmailUserDTO } from '../DTOs/CodeSendEmailUserDTO';
+import { ISendEmailUser } from 'src/Shoope.Infra.Data/SendEmailUser/Interface/ISendEmailUser';
 
 @Injectable()
 export class UserAuthenticationService implements IUserAuthenticationService {
@@ -21,6 +22,7 @@ export class UserAuthenticationService implements IUserAuthenticationService {
     private readonly _userCreateAccountFunction: IUserCreateAccountFunction,
     private readonly _tokenGeneratorUser: ITokenGeneratorUser,
     private readonly codeRandomDictionary: CodeRandomDictionary,
+    private readonly _sendEmailUser: ISendEmailUser,
   ) {}
 
   async VerficEmailAlreadySetUp(
@@ -65,11 +67,7 @@ export class UserAuthenticationService implements IUserAuthenticationService {
 
       if (!user) ResultService.fail<CodeSendEmailUserDTO | null>('Error User it is null');
 
-      const checkIfUserExist = await this._userRepository.GetIfUserExistEmail(
-        codeSendEmailUserDTO.email,
-      );
-
-      if (checkIfUserExist != null)
+      if (user.email != null)
         return ResultService.ok(
           new CodeSendEmailUserDTO({
             code: null,
@@ -85,7 +83,18 @@ export class UserAuthenticationService implements IUserAuthenticationService {
       const randomCode = this.GerarNumeroAleatorio();
       this.codeRandomDictionary.add(user.id.toString(), randomCode);
 
-      // _sendEmailUser.SendCodeRandom(user, randomCode);
+      const resultSend = await this._sendEmailUser.SendCodeRandom(user, randomCode);
+
+      if (!resultSend.isSuccess) {
+        const codeSend = new CodeSendEmailUserDTO({
+          code: resultSend.data,
+          codeSendToEmailSuccessfully: false,
+          userAlreadyExist: false,
+          name: null,
+          email: null,
+        });
+        return ResultService.failWithData<CodeSendEmailUserDTO | null>(codeSend);
+      }
 
       const codeSend = new CodeSendEmailUserDTO({
         code: randomCode.toString(),

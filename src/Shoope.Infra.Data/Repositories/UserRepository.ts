@@ -30,19 +30,7 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      userData.email,
-      userData.gender,
-      userData.phone,
-      userData.passwordHash,
-      userData.salt,
-      userData.cpf,
-      userData.birthDate,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
@@ -68,19 +56,7 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
@@ -108,19 +84,7 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      userData.email,
-      userData.gender,
-      userData.phone,
-      userData.passwordHash,
-      userData.salt,
-      userData.cpf,
-      userData.birthDate,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
@@ -147,19 +111,7 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      userData.email,
-      userData.gender,
-      userData.phone,
-      null,
-      null,
-      userData.cpf,
-      userData.birthDate,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
@@ -186,19 +138,7 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
@@ -211,7 +151,7 @@ export class UserRepository extends IUserRepository {
       select: {
         id: true,
         name: true,
-        email: false,
+        email: true,
         gender: false,
         phone: false,
         passwordHash: false,
@@ -226,22 +166,11 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
+
   async GetIfUserExistEmail(email: string): Promise<User | null> {
     const userData = await this._prisma.user.findFirst({
       where: {
@@ -265,19 +194,7 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
@@ -304,19 +221,7 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      userData.email,
-      null,
-      userData.phone,
-      userData.passwordHash,
-      userData.salt,
-      null,
-      null,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
@@ -341,19 +246,7 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      userData.email,
-      userData.gender,
-      userData.phone,
-      userData.passwordHash,
-      userData.salt,
-      userData.cpf,
-      userData.birthDate,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
@@ -379,19 +272,7 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      userData.email,
-      userData.gender,
-      userData.phone,
-      userData.passwordHash,
-      userData.salt,
-      userData.cpf,
-      userData.birthDate,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
   }
@@ -405,20 +286,23 @@ export class UserRepository extends IUserRepository {
       return null; // Retorna null se o usuário não for encontrado
     }
 
-    // Cria uma instância de User a partir dos dados obtidos
-    const user = new User(
-      userData.id,
-      userData.name,
-      userData.email,
-      userData.gender,
-      userData.phone,
-      userData.passwordHash,
-      userData.salt,
-      userData.cpf,
-      userData.birthDate,
-      userData.userImage,
-    );
+    const user = this.mapToUser(userData);
 
     return user;
+  }
+
+  mapToUser(userData: Partial<User>): User {
+    return new User(
+      userData.id ?? null,
+      userData.name ?? null,
+      userData.email ?? null,
+      userData.gender ?? null,
+      userData.phone ?? null,
+      userData.passwordHash ?? null,
+      userData.salt ?? null,
+      userData.cpf ?? null,
+      userData.birthDate ?? null,
+      userData.userImage ?? null,
+    );
   }
 }

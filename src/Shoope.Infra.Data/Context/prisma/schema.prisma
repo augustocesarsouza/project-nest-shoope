@@ -24,4 +24,24 @@ model User {
   cpf          String?   @unique
   birthDate    DateTime?
   userImage    String?
+  Address      Address[]
+}
+
+model Address {
+  id             String  @id @default(uuid())
+  fullName       String?
+  phoneNumber    String?
+  cep            String?
+  stateCity      String?
+  neighborhood   String?
+  street         String?
+  numberHome     String?
+  complement     String?
+  defaultAddress Int?
+
+  userId String // Foreign key para o User
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) // Opcional, mas útil
+  updatedAt DateTime @updatedAt // Opcional, mas útil
 }
