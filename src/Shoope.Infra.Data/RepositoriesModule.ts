@@ -11,6 +11,8 @@ import { SendEmailUser } from './SendEmailUser/SendEmailUser';
 import { ConfigModule } from '@nestjs/config';
 import { ICategoryRepository } from 'src/Shoope.Domain/Repositories/ICategoryRepository';
 import { CategoryRepository } from './Repositories/CategoryRepository';
+import { ICuponRepository } from 'src/Shoope.Domain/Repositories/ICuponRepository';
+import { CuponRepository } from './Repositories/CuponRepository';
 
 @Module({
   imports: [ConfigModule],
@@ -29,6 +31,10 @@ import { CategoryRepository } from './Repositories/CategoryRepository';
       useClass: CategoryRepository,
     },
     {
+      provide: ICuponRepository,
+      useClass: CuponRepository,
+    },
+    {
       provide: ISendEmailBrevo,
       useClass: SendEmailBrevo,
     },
@@ -41,6 +47,7 @@ import { CategoryRepository } from './Repositories/CategoryRepository';
     IUserRepository,
     IAddressRepository,
     ICategoryRepository,
+    ICuponRepository,
     ISendEmailBrevo,
     ISendEmailUser,
     // Exporte outros repositórios aqui, caso necessário

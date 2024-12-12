@@ -55,3 +55,18 @@ model Category {
   createdAt DateTime @default(now()) // Opcional, mas útil
   updatedAt DateTime @updatedAt // Opcional, mas útil
 }
+
+model Cupon {
+  id                String   @id @default(uuid())
+  firstText         String
+  secondText        String
+  thirdText         String
+  dateValidateCupon DateTime
+  quantityCupons    Int
+  whatCuponNumber   Int
+  secondImg         String?
+  secondImgAlt      String?
+
+  createdAt DateTime @default(now()) // Opcional, mas útil
+  updatedAt DateTime @updatedAt // Opcional, mas útil
+}

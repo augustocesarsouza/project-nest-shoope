@@ -3,7 +3,7 @@ import { Response } from 'express';
 import { CategoryDTOValidateCreate } from 'src/Shoope.Application/DTOs/Validations/CategoryDTOValidate/CategoryDTOValidateCreate';
 import { ICategoryService } from 'src/Shoope.Application/Services/Interfaces/ICategoryService';
 
-@Controller('v1/public/categories')
+@Controller('v1/categories')
 export class CategoryController {
   constructor(private readonly _categoryService: ICategoryService) {}
 

@@ -22,6 +22,10 @@ import { CategoryService } from './Services/CategoryService';
 import { ICategoryService } from './Services/Interfaces/ICategoryService';
 import { ICategoryMap } from './Mappings/IMappings/ICategoryMap';
 import { CategoryMap } from './Mappings/CategoryMap';
+import { ICuponMap } from './Mappings/IMappings/ICuponMap';
+import { CuponMap } from './Mappings/CuponMap';
+import { ICuponService } from './Services/Interfaces/ICuponService';
+import { CuponService } from './Services/CuponService';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -44,6 +48,10 @@ import { CategoryMap } from './Mappings/CategoryMap';
       useClass: CategoryService,
     },
     {
+      provide: ICuponService,
+      useClass: CuponService,
+    },
+    {
       provide: IUserCreateAccountFunction,
       useClass: UserCreateAccountFunction,
     },
@@ -60,6 +68,10 @@ import { CategoryMap } from './Mappings/CategoryMap';
       useClass: CategoryMap,
     },
     {
+      provide: ICuponMap,
+      useClass: CuponMap,
+    },
+    {
       provide: IClodinaryUti,
       useClass: ClodinaryUti,
     },
@@ -73,9 +85,11 @@ import { CategoryMap } from './Mappings/CategoryMap';
     IUserAuthenticationService,
     IUserCreateAccountFunction,
     ICategoryService,
+    ICuponService,
     IUserMap,
     IAddressMap,
     ICategoryMap,
+    ICuponMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,

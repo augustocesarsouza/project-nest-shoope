@@ -5,7 +5,7 @@ import { AddressDTOValidateCreate } from 'src/Shoope.Application/DTOs/Validation
 import { AddressDTOValidatorUpdate } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidate/AddressDTOValidatorUpdate';
 import { AddressDTOValidateUpdateOnlyDefault } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidate/AddressDTOValidateUpdateOnlyDefault';
 
-@Controller('v1/public/address')
+@Controller('v1/address')
 export class AddressController {
   constructor(private readonly _addressService: IAddressService) {}
 
@@ -31,7 +31,6 @@ export class AddressController {
     const result = await this._addressService.GetAddressByUserId(userId);
 
     if (result.isSuccess) {
-      // return { statusCode: HttpStatus.OK, result };
       return res.status(HttpStatus.OK).json({
         data: result.data,
       });
@@ -47,7 +46,6 @@ export class AddressController {
     const result = await this._addressService.GetAddressByUserIdUser(userId);
 
     if (result.isSuccess) {
-      // return { statusCode: HttpStatus.OK, result };
       return res.status(HttpStatus.OK).json({
         data: result.data,
       });
@@ -66,13 +64,11 @@ export class AddressController {
     const result = await this._addressService.Create(addressDTOValidateCreate);
 
     if (result.isSuccess) {
-      // return { statusCode: HttpStatus.OK, data: result };
       return res.status(HttpStatus.OK).json({
         data: result.data,
       });
     }
 
-    // return { statusCode: HttpStatus.BAD_REQUEST, data: result };
     return res.status(HttpStatus.BAD_REQUEST).json({
       data: result,
     });
@@ -86,13 +82,11 @@ export class AddressController {
     const result = await this._addressService.UpdateAddressUser(addressDTOValidatorUpdate);
 
     if (result.isSuccess) {
-      // return { statusCode: HttpStatus.OK, result };
       return res.status(HttpStatus.OK).json({
         data: result.data,
       });
     }
 
-    // return { statusCode: HttpStatus.BAD_REQUEST, data: result };
     return res.status(HttpStatus.BAD_REQUEST).json({
       data: result,
     });
@@ -108,13 +102,11 @@ export class AddressController {
     );
 
     if (result.isSuccess) {
-      // return { statusCode: HttpStatus.OK, result };
       return res.status(HttpStatus.OK).json({
         data: result.data,
       });
     }
 
-    // return { statusCode: HttpStatus.BAD_REQUEST, data: result };
     return res.status(HttpStatus.BAD_REQUEST).json({
       data: result,
     });
@@ -125,13 +117,11 @@ export class AddressController {
     const result = await this._addressService.Delete(addressId);
 
     if (result.isSuccess) {
-      // return { statusCode: HttpStatus.OK, result };
       return res.status(HttpStatus.OK).json({
         data: result.data,
       });
     }
 
-    // return { statusCode: HttpStatus.BAD_REQUEST, result };
     return res.status(HttpStatus.BAD_REQUEST).json({
       data: result,
     });

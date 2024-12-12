@@ -21,7 +21,7 @@ import { UserChangePasswordDTO } from 'src/Shoope.Application/DTOs/UserChangePas
 import { CodeSendEmailUserDTO } from 'src/Shoope.Application/DTOs/CodeSendEmailUserDTO';
 import { UserConfirmCodeEmailDTO } from 'src/Shoope.Application/DTOs/UserConfirmCodeEmailDTO';
 
-@Controller('v1/public/user')
+@Controller('v1/user')
 export class UserController {
   constructor(
     private readonly _userManagementService: IUserManagementService,
