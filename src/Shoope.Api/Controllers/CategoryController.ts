@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { CategoryDTOValidateCreate } from 'src/Shoope.Application/DTOs/Validations/CategoryDTOValidate/CategoryDTOValidateCreate';
 import { ICategoryService } from 'src/Shoope.Application/Services/Interfaces/ICategoryService';
@@ -55,6 +55,23 @@ export class CategoryController {
     }
 
     // return { statusCode: HttpStatus.BAD_REQUEST, data: result };
+    return res.status(HttpStatus.BAD_REQUEST).json({
+      data: result,
+    });
+  }
+
+  @Delete('delete/:categoryId')
+  async DeleteAsync(@Param('categoryId') categoryId: string, @Res() res: Response) {
+    const result = await this._categoryService.Delete(categoryId);
+
+    if (result.isSuccess) {
+      // return { statusCode: HttpStatus.OK, result };
+      return res.status(HttpStatus.OK).json({
+        data: result.data,
+      });
+    }
+
+    // return { statusCode: HttpStatus.BAD_REQUEST, result };
     return res.status(HttpStatus.BAD_REQUEST).json({
       data: result,
     });

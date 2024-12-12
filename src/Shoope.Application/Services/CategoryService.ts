@@ -8,6 +8,7 @@ import { ResultService } from './ResultService';
 import { CategoryDTOValidateCreate } from '../DTOs/Validations/CategoryDTOValidate/CategoryDTOValidateCreate';
 import { Category } from 'src/Shoope.Domain/Entities/Category';
 import { IClodinaryUti } from 'src/Shoope.Infra.Data/UtilityExternal/Interface/IClodinaryUti';
+import { CloudinaryResult } from 'src/Shoope.Infra.Data/ReturnDTO/CloudinaryResult';
 
 @Injectable()
 export class CategoryService implements ICategoryService {
@@ -88,7 +89,55 @@ export class CategoryService implements ICategoryService {
     }
   }
 
-  Delete(categoryId: string): Promise<ResultService<CategoryDTO | null>> {
-    throw new Error('Method not implemented.' + categoryId);
+  async Delete(categoryId: string): Promise<ResultService<CategoryDTO | null>> {
+    try {
+      const categoryForDelete = await this._categoryRepository.GetCategoriesById(categoryId);
+
+      if (categoryForDelete === null)
+        return ResultService.fail<CategoryDTO | null>('Category not found');
+
+      const deleteFound = await this.DeleteFileCloudinary(categoryForDelete.imgCategory, 'image');
+
+      if (!deleteFound.isSuccess)
+        return ResultService.fail<CategoryDTO | null>(deleteFound.message);
+
+      const deleteCloudinary = deleteFound.data as CloudinaryResult;
+
+      if (!deleteCloudinary.deleteSuccessfully) {
+        return ResultService.fail<CategoryDTO | null>('Failed to delete media from Cloudinary');
+      }
+
+      const categoryDeleteSuccessfully = await this._categoryRepository.Delete(
+        categoryForDelete.id,
+      );
+
+      return ResultService.ok<CategoryDTO>(
+        this._categoryMap.transformToDTO(categoryDeleteSuccessfully),
+      );
+    } catch (error) {
+      return ResultService.fail<CategoryDTO | null>(
+        error.message || 'An unexpected error occurred',
+      );
+    }
   }
+
+  private DeleteFileCloudinary = async (
+    userImage: string,
+    resourceType: string,
+  ): Promise<ResultService<CategoryDTO> | ResultService<CloudinaryResult>> => {
+    const match = userImage.match(/upload\/(?:v\d+\/)?(.+)/);
+    const extractedPath = match ? match[1] : null;
+    const index = extractedPath.lastIndexOf('.');
+
+    if (!extractedPath) return ResultService.fail<CategoryDTO | null>('Image path not found');
+
+    const pathWithoutExtension = index !== -1 ? extractedPath.slice(0, index) : extractedPath;
+
+    const deleteCloudinary = await this._clodinaryUti.DeleteMediaCloudinary(
+      pathWithoutExtension,
+      resourceType,
+    );
+
+    return ResultService.ok(deleteCloudinary);
+  };
 }
