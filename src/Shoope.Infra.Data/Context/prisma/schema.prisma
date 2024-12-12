@@ -45,3 +45,13 @@ model Address {
   createdAt DateTime @default(now()) // Opcional, mas útil
   updatedAt DateTime @updatedAt // Opcional, mas útil
 }
+
+model Category {
+  id          String @id @default(uuid())
+  imgCategory String
+  altValue    String
+  title       String
+
+  createdAt DateTime @default(now()) // Opcional, mas útil
+  updatedAt DateTime @updatedAt // Opcional, mas útil
+}

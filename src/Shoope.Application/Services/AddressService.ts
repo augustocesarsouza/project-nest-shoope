@@ -156,7 +156,18 @@ export class AddressService implements IAddressService {
     }
   }
 
-  Delete(addressId: string): Promise<ResultService<AddressDTO | null>> {
-    throw new Error('Method not implemented.' + addressId);
+  async Delete(addressId: string): Promise<ResultService<AddressDTO | null>> {
+    try {
+      const addressDbDelete = await this._addressRepository.GetAddressById(addressId);
+
+      if (addressDbDelete === null)
+        return ResultService.fail<AddressDTO | null>('Address not found');
+
+      const userDeleteSuccessfully = await this._addressRepository.Delete(addressDbDelete.id);
+
+      return ResultService.ok<AddressDTO>(this._addressMap.transformToDTO(userDeleteSuccessfully));
+    } catch (error) {
+      return ResultService.fail<AddressDTO | null>(error.message || 'An unexpected error occurred');
+    }
   }
 }
