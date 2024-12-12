@@ -18,6 +18,10 @@ import { IAddressService } from './Services/Interfaces/IAddressService';
 import { AddressService } from './Services/AddressService';
 import { IAddressMap } from './Mappings/IMappings/IAddressMap';
 import { AddressMap } from './Mappings/AddressMap';
+import { CategoryService } from './Services/CategoryService';
+import { ICategoryService } from './Services/Interfaces/ICategoryService';
+import { ICategoryMap } from './Mappings/IMappings/ICategoryMap';
+import { CategoryMap } from './Mappings/CategoryMap';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -36,6 +40,10 @@ import { AddressMap } from './Mappings/AddressMap';
       useClass: AddressService,
     },
     {
+      provide: ICategoryService,
+      useClass: CategoryService,
+    },
+    {
       provide: IUserCreateAccountFunction,
       useClass: UserCreateAccountFunction,
     },
@@ -46,6 +54,10 @@ import { AddressMap } from './Mappings/AddressMap';
     {
       provide: IAddressMap,
       useClass: AddressMap,
+    },
+    {
+      provide: ICategoryMap,
+      useClass: CategoryMap,
     },
     {
       provide: IClodinaryUti,
@@ -60,8 +72,10 @@ import { AddressMap } from './Mappings/AddressMap';
     IUserManagementService,
     IUserAuthenticationService,
     IUserCreateAccountFunction,
+    ICategoryService,
     IUserMap,
     IAddressMap,
+    ICategoryMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,

@@ -39,6 +39,7 @@ export class ClodinaryUti implements IClodinaryUti {
         height,
         crop: 'fill',
         quality: 'auto',
+        format: 'jpg',
       });
 
       const cloudinaryCreate = new CloudinaryCreate();

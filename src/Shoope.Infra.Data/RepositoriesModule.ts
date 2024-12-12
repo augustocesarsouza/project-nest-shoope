@@ -9,6 +9,8 @@ import { SendEmailBrevo } from './UtilityExternal/SendEmailBrevo';
 import { ISendEmailUser } from './SendEmailUser/Interface/ISendEmailUser';
 import { SendEmailUser } from './SendEmailUser/SendEmailUser';
 import { ConfigModule } from '@nestjs/config';
+import { ICategoryRepository } from 'src/Shoope.Domain/Repositories/ICategoryRepository';
+import { CategoryRepository } from './Repositories/CategoryRepository';
 
 @Module({
   imports: [ConfigModule],
@@ -23,6 +25,10 @@ import { ConfigModule } from '@nestjs/config';
       useClass: AddressRepository,
     },
     {
+      provide: ICategoryRepository,
+      useClass: CategoryRepository,
+    },
+    {
       provide: ISendEmailBrevo,
       useClass: SendEmailBrevo,
     },
@@ -34,6 +40,7 @@ import { ConfigModule } from '@nestjs/config';
   exports: [
     IUserRepository,
     IAddressRepository,
+    ICategoryRepository,
     ISendEmailBrevo,
     ISendEmailUser,
     // Exporte outros repositórios aqui, caso necessário

@@ -9,17 +9,16 @@ export class CategoryRepository extends ICategoryRepository {
     super();
   }
 
-  GetCategoriesById(categorieId: string): Promise<Category | null> {
-    throw new Error('Method not implemented.' + categorieId);
-  }
-
-  async GetAllCategories(): Promise<Category[] | null> {
-    const categoryData: Category[] = await this._prisma.category.findMany({
+  async GetCategoriesById(categorieId: string): Promise<Category | null> {
+    const categoryData = await this._prisma.category.findFirst({
+      where: {
+        id: categorieId,
+      },
       select: {
         id: true,
         imgCategory: true,
         altValue: true,
-        title: false,
+        title: true,
         createdAt: false,
         updatedAt: false,
       },
@@ -29,12 +28,33 @@ export class CategoryRepository extends ICategoryRepository {
       return null;
     }
 
-    // const listCategory: Category[] = [];
+    const category = this.mapToCategory(categoryData);
 
-    // for (let i = 0; i < categoryData.length; i++) {
-    //   const category = this.mapToCategory(categoryData[i]);
-    //   listCategory.push(category);
-    // }
+    return category;
+  }
+
+  async GetAllCategories(): Promise<Category[] | null> {
+    const categoryData = await this._prisma.category.findMany({
+      select: {
+        id: true,
+        imgCategory: true,
+        altValue: true,
+        title: true,
+        createdAt: false,
+        updatedAt: false,
+      },
+    });
+
+    if (!categoryData) {
+      return null;
+    }
+
+    const listCategory: Category[] = [];
+
+    for (let i = 0; i < categoryData.length; i++) {
+      const category = this.mapToCategory(categoryData[i]);
+      listCategory.push(category);
+    }
 
     return categoryData;
   }

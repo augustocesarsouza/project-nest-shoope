@@ -4,11 +4,11 @@ import { AddressDTO } from '../DTOs/AddressDTO';
 import { ResultService } from './ResultService';
 import { IAddressRepository } from 'src/Shoope.Domain/Repositories/IAddressRepository';
 import { IAddressMap } from '../Mappings/IMappings/IAddressMap';
-import { AddressDTOValidateCreate } from '../DTOs/Validations/AddressDTOValidateCreate';
+import { AddressDTOValidateCreate } from '../DTOs/Validations/AddressDTOValidate/AddressDTOValidateCreate';
 import { v4 as uuidv4 } from 'uuid';
 import { Address } from 'src/Shoope.Domain/Entities/Address';
-import { AddressDTOValidatorUpdate } from '../DTOs/Validations/AddressDTOValidatorUpdate';
-import { AddressDTOValidateUpdateOnlyDefault } from '../DTOs/Validations/AddressDTOValidateUpdateOnlyDefault';
+import { AddressDTOValidatorUpdate } from '../DTOs/Validations/AddressDTOValidate/AddressDTOValidatorUpdate';
+import { AddressDTOValidateUpdateOnlyDefault } from '../DTOs/Validations/AddressDTOValidate/AddressDTOValidateUpdateOnlyDefault';
 
 @Injectable()
 export class AddressService implements IAddressService {

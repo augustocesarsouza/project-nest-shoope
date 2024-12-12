@@ -1,8 +1,8 @@
 import { AddressDTO } from 'src/Shoope.Application/DTOs/AddressDTO';
 import { ResultService } from '../ResultService';
-import { AddressDTOValidateCreate } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidateCreate';
-import { AddressDTOValidatorUpdate } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidatorUpdate';
-import { AddressDTOValidateUpdateOnlyDefault } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidateUpdateOnlyDefault';
+import { AddressDTOValidateCreate } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidate/AddressDTOValidateCreate';
+import { AddressDTOValidatorUpdate } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidate/AddressDTOValidatorUpdate';
+import { AddressDTOValidateUpdateOnlyDefault } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidate/AddressDTOValidateUpdateOnlyDefault';
 
 export abstract class IAddressService {
   abstract GetAddressById(addressId: string): Promise<ResultService<AddressDTO | null>>;

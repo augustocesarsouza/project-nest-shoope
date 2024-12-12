@@ -9,6 +9,7 @@ export class AddressMap implements IAddressMap {
   transformToDTO(address: Address): AddressDTO {
     return plainToClass(AddressDTO, address);
   }
+
   transformToEntity(addressDTO: AddressDTO): Address {
     return plainToClass(Address, addressDTO);
   }

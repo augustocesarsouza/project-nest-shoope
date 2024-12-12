@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
 import { IAddressService } from 'src/Shoope.Application/Services/Interfaces/IAddressService';
 import { Response } from 'express';
-import { AddressDTOValidateCreate } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidateCreate';
-import { AddressDTOValidatorUpdate } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidatorUpdate';
-import { AddressDTOValidateUpdateOnlyDefault } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidateUpdateOnlyDefault';
+import { AddressDTOValidateCreate } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidate/AddressDTOValidateCreate';
+import { AddressDTOValidatorUpdate } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidate/AddressDTOValidatorUpdate';
+import { AddressDTOValidateUpdateOnlyDefault } from 'src/Shoope.Application/DTOs/Validations/AddressDTOValidate/AddressDTOValidateUpdateOnlyDefault';
 
 @Controller('v1/public/address')
 export class AddressController {
