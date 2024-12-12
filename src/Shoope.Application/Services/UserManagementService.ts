@@ -178,26 +178,6 @@ export class UserManagementService implements IUserManagementService {
     }
   }
 
-  private WhichFoundDeleteCloudinary = async (
-    userImage: string,
-    resourceType: string,
-  ): Promise<ResultService<UserDTO> | ResultService<CloudinaryResult>> => {
-    const match = userImage.match(/upload\/(?:v\d+\/)?(.+)/);
-    const extractedPath = match ? match[1] : null;
-    const index = extractedPath.lastIndexOf('.');
-
-    if (!extractedPath) return ResultService.fail<UserDTO | null>('Image path not found');
-
-    const pathWithoutExtension = index !== -1 ? extractedPath.slice(0, index) : extractedPath;
-
-    const deleteCloudinary = await this._clodinaryUti.DeleteMediaCloudinary(
-      pathWithoutExtension,
-      resourceType,
-    );
-
-    return ResultService.ok(deleteCloudinary);
-  };
-
   async UpdateUser(userUpdateFillDTO: UserUpdateFillDTO): Promise<ResultService<UserDTO | null>> {
     try {
       if (userUpdateFillDTO === null)
@@ -260,4 +240,24 @@ export class UserManagementService implements IUserManagementService {
       return ResultService.fail<UserDTO | null>(error.message || 'An unexpected error occurred');
     }
   }
+
+  private WhichFoundDeleteCloudinary = async (
+    userImage: string,
+    resourceType: string,
+  ): Promise<ResultService<UserDTO> | ResultService<CloudinaryResult>> => {
+    const match = userImage.match(/upload\/(?:v\d+\/)?(.+)/);
+    const extractedPath = match ? match[1] : null;
+    const index = extractedPath.lastIndexOf('.');
+
+    if (!extractedPath) return ResultService.fail<UserDTO | null>('Image path not found');
+
+    const pathWithoutExtension = index !== -1 ? extractedPath.slice(0, index) : extractedPath;
+
+    const deleteCloudinary = await this._clodinaryUti.DeleteMediaCloudinary(
+      pathWithoutExtension,
+      resourceType,
+    );
+
+    return ResultService.ok(deleteCloudinary);
+  };
 }
