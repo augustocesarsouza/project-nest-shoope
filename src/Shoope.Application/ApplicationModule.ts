@@ -14,6 +14,10 @@ import { UserAuthenticationService } from './Services/UserAuthenticationService'
 import { TokenGeneratorUser } from 'src/Shoope.Infra.Data/Authentication/TokenGeneratorUser';
 import { ITokenGeneratorUser } from 'src/Shoope.Domain/Authentication/ITokenGeneratorUser';
 import { CodeRandomDictionary } from './CodeRandomUser/CodeRandomDictionary';
+import { IAddressService } from './Services/Interfaces/IAddressService';
+import { AddressService } from './Services/AddressService';
+import { IAddressMap } from './Mappings/IMappings/IAddressMap';
+import { AddressMap } from './Mappings/AddressMap';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -28,12 +32,20 @@ import { CodeRandomDictionary } from './CodeRandomUser/CodeRandomDictionary';
       useClass: UserAuthenticationService,
     },
     {
+      provide: IAddressService,
+      useClass: AddressService,
+    },
+    {
       provide: IUserCreateAccountFunction,
       useClass: UserCreateAccountFunction,
     },
     {
       provide: IUserMap,
       useClass: UserMap,
+    },
+    {
+      provide: IAddressMap,
+      useClass: AddressMap,
     },
     {
       provide: IClodinaryUti,
@@ -49,8 +61,10 @@ import { CodeRandomDictionary } from './CodeRandomUser/CodeRandomDictionary';
     IUserAuthenticationService,
     IUserCreateAccountFunction,
     IUserMap,
+    IAddressMap,
     IClodinaryUti,
     ITokenGeneratorUser,
+    IAddressService,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })

@@ -3,6 +3,7 @@ import { UserController } from './Shoope.Api/Controllers/UserController';
 import { PrismaService } from './Shoope.Infra.Data/Context/Database/PrismaService';
 import { ApplicationModule } from './Shoope.Application/ApplicationModule';
 import { ConfigModule } from '@nestjs/config';
+import { AddressController } from './Shoope.Api/Controllers/AddressController';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     ApplicationModule,
   ],
-  controllers: [UserController],
+  controllers: [UserController, AddressController],
   providers: [PrismaService],
 })
 export class AppModule {}
