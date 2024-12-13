@@ -30,6 +30,10 @@ import { IProductsOfferFlashService } from './Services/Interfaces/IProductsOffer
 import { ProductsOfferFlashService } from './Services/ProductsOfferFlashService';
 import { IProductsOfferFlashMap } from './Mappings/IMappings/IProductsOfferFlashMap';
 import { ProductsOfferFlashMap } from './Mappings/ProductsOfferFlashMap';
+import { IFlashSaleProductAllInfoService } from './Services/Interfaces/IFlashSaleProductAllInfoService';
+import { FlashSaleProductAllInfoService } from './Services/FlashSaleProductAllInfoService';
+import { IFlashSaleProductAllInfoMap } from './Mappings/IMappings/IFlashSaleProductAllInfoMap';
+import { FlashSaleProductAllInfoMap } from './Mappings/FlashSaleProductAllInfoMap';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -60,6 +64,11 @@ import { ProductsOfferFlashMap } from './Mappings/ProductsOfferFlashMap';
       useClass: ProductsOfferFlashService,
     },
     {
+      provide: IFlashSaleProductAllInfoService,
+      useClass: FlashSaleProductAllInfoService,
+    },
+
+    {
       provide: IUserCreateAccountFunction,
       useClass: UserCreateAccountFunction,
     },
@@ -78,6 +87,10 @@ import { ProductsOfferFlashMap } from './Mappings/ProductsOfferFlashMap';
     {
       provide: ICuponMap,
       useClass: CuponMap,
+    },
+    {
+      provide: IFlashSaleProductAllInfoMap,
+      useClass: FlashSaleProductAllInfoMap,
     },
     {
       provide: IProductsOfferFlashMap,
@@ -103,10 +116,12 @@ import { ProductsOfferFlashMap } from './Mappings/ProductsOfferFlashMap';
     IAddressMap,
     ICategoryMap,
     ICuponMap,
+    IFlashSaleProductAllInfoMap,
     IProductsOfferFlashMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,
+    IFlashSaleProductAllInfoService,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })
