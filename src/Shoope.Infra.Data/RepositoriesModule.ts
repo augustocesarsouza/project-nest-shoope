@@ -13,6 +13,8 @@ import { ICategoryRepository } from 'src/Shoope.Domain/Repositories/ICategoryRep
 import { CategoryRepository } from './Repositories/CategoryRepository';
 import { ICuponRepository } from 'src/Shoope.Domain/Repositories/ICuponRepository';
 import { CuponRepository } from './Repositories/CuponRepository';
+import { IProductsOfferFlashRepository } from 'src/Shoope.Domain/Repositories/IProductsOfferFlashRepository';
+import { ProductsOfferFlashRepository } from './Repositories/ProductsOfferFlashRepository';
 
 @Module({
   imports: [ConfigModule],
@@ -35,6 +37,10 @@ import { CuponRepository } from './Repositories/CuponRepository';
       useClass: CuponRepository,
     },
     {
+      provide: IProductsOfferFlashRepository,
+      useClass: ProductsOfferFlashRepository,
+    },
+    {
       provide: ISendEmailBrevo,
       useClass: SendEmailBrevo,
     },
@@ -48,6 +54,7 @@ import { CuponRepository } from './Repositories/CuponRepository';
     IAddressRepository,
     ICategoryRepository,
     ICuponRepository,
+    IProductsOfferFlashRepository,
     ISendEmailBrevo,
     ISendEmailUser,
     // Exporte outros repositórios aqui, caso necessário

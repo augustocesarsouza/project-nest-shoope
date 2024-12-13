@@ -26,6 +26,10 @@ import { ICuponMap } from './Mappings/IMappings/ICuponMap';
 import { CuponMap } from './Mappings/CuponMap';
 import { ICuponService } from './Services/Interfaces/ICuponService';
 import { CuponService } from './Services/CuponService';
+import { IProductsOfferFlashService } from './Services/Interfaces/IProductsOfferFlashService';
+import { ProductsOfferFlashService } from './Services/ProductsOfferFlashService';
+import { IProductsOfferFlashMap } from './Mappings/IMappings/IProductsOfferFlashMap';
+import { ProductsOfferFlashMap } from './Mappings/ProductsOfferFlashMap';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -52,6 +56,10 @@ import { CuponService } from './Services/CuponService';
       useClass: CuponService,
     },
     {
+      provide: IProductsOfferFlashService,
+      useClass: ProductsOfferFlashService,
+    },
+    {
       provide: IUserCreateAccountFunction,
       useClass: UserCreateAccountFunction,
     },
@@ -72,6 +80,10 @@ import { CuponService } from './Services/CuponService';
       useClass: CuponMap,
     },
     {
+      provide: IProductsOfferFlashMap,
+      useClass: ProductsOfferFlashMap,
+    },
+    {
       provide: IClodinaryUti,
       useClass: ClodinaryUti,
     },
@@ -86,10 +98,12 @@ import { CuponService } from './Services/CuponService';
     IUserCreateAccountFunction,
     ICategoryService,
     ICuponService,
+    IProductsOfferFlashService,
     IUserMap,
     IAddressMap,
     ICategoryMap,
     ICuponMap,
+    IProductsOfferFlashMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,

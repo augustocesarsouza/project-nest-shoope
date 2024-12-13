@@ -73,10 +73,7 @@ export class ClodinaryUti implements IClodinaryUti {
     }
   }
 
-  async DeleteMediaCloudinary(
-    publicId: string,
-    resourceType: 'image' | 'video',
-  ): Promise<CloudinaryResult> {
+  async DeleteMediaCloudinary(publicId: string, resourceType: string): Promise<CloudinaryResult> {
     const cloudinaryResult = new CloudinaryResult();
     try {
       const result = await this.cloudinaryInstance.uploader.destroy(publicId, {
@@ -96,4 +93,29 @@ export class ClodinaryUti implements IClodinaryUti {
       return cloudinaryResult;
     }
   }
+
+  public DeleteFileCloudinaryExtractingPublicIdFromUrl = async (
+    url: string,
+    resourceType: string,
+  ): Promise<CloudinaryResult> => {
+    const cloudinaryResult = new CloudinaryResult();
+    const match = url.match(/upload\/(?:v\d+\/)?(.+)/);
+    const extractedPath = match ? match[1] : null;
+    const index = extractedPath.lastIndexOf('.');
+
+    if (!extractedPath) {
+      cloudinaryResult.deleteSuccessfully = false;
+      return cloudinaryResult;
+    }
+
+    const pathWithoutExtension = index !== -1 ? extractedPath.slice(0, index) : extractedPath;
+
+    const deleteCloudinary = await this.DeleteMediaCloudinary(pathWithoutExtension, resourceType);
+
+    if (!deleteCloudinary.deleteSuccessfully) {
+      return deleteCloudinary;
+    }
+
+    return deleteCloudinary;
+  };
 }

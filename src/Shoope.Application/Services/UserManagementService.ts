@@ -10,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { IUserCreateAccountFunction } from './Interfaces/IUserCreateAccountFunction';
 import { User } from 'src/Shoope.Domain/Entities/User';
 import { IClodinaryUti } from 'src/Shoope.Infra.Data/UtilityExternal/Interface/IClodinaryUti';
-import { CloudinaryResult } from 'src/Shoope.Infra.Data/ReturnDTO/CloudinaryResult';
 import { UserUpdateFillDTO } from '../DTOs/UserUpdateFillDTO';
 
 @Injectable()
@@ -130,14 +129,13 @@ export class UserManagementService implements IUserManagementService {
       if (userToUpdate === null) return ResultService.fail<UserDTO>('Error UserToUpdate Is null');
 
       if (userUpdateAllDTO.base64StringImage !== null) {
-        const deleteFound = await this.WhichFoundDeleteCloudinary(userToUpdate.userImage, 'image');
+        const deleteFound = await this._clodinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrl(
+          userToUpdate.userImage,
+          'image',
+        );
 
-        if (!deleteFound.isSuccess) return ResultService.fail<UserDTO | null>(deleteFound.message);
-
-        const deleteCloudinary = deleteFound.data as CloudinaryResult;
-
-        if (!deleteCloudinary.deleteSuccessfully)
-          return ResultService.fail<UserDTO | null>('Failed to delete media from Cloudinary');
+        if (!deleteFound.deleteSuccessfully)
+          return ResultService.fail<UserDTO | null>(deleteFound.message);
 
         const result = await this._clodinaryUti.CreateMedia(
           userUpdateAllDTO.base64StringImage,
@@ -223,15 +221,13 @@ export class UserManagementService implements IUserManagementService {
 
       if (userDelete === null) return ResultService.fail<UserDTO | null>('User not found');
 
-      const deleteFound = await this.WhichFoundDeleteCloudinary(userDelete.userImage, 'image');
+      const deleteFound = await this._clodinaryUti.DeleteFileCloudinaryExtractingPublicIdFromUrl(
+        userDelete.userImage,
+        'image',
+      );
 
-      if (!deleteFound.isSuccess) return ResultService.fail<UserDTO | null>(deleteFound.message);
-
-      const deleteCloudinary = deleteFound.data as CloudinaryResult;
-
-      if (!deleteCloudinary.deleteSuccessfully) {
-        return ResultService.fail<UserDTO | null>('Failed to delete media from Cloudinary');
-      }
+      if (!deleteFound.deleteSuccessfully)
+        return ResultService.fail<UserDTO | null>(deleteFound.message);
 
       const userDeleteSuccessfully = await this._userRepository.Delete(userDelete.id);
 
@@ -240,24 +236,4 @@ export class UserManagementService implements IUserManagementService {
       return ResultService.fail<UserDTO | null>(error.message || 'An unexpected error occurred');
     }
   }
-
-  private WhichFoundDeleteCloudinary = async (
-    userImage: string,
-    resourceType: string,
-  ): Promise<ResultService<UserDTO> | ResultService<CloudinaryResult>> => {
-    const match = userImage.match(/upload\/(?:v\d+\/)?(.+)/);
-    const extractedPath = match ? match[1] : null;
-    const index = extractedPath.lastIndexOf('.');
-
-    if (!extractedPath) return ResultService.fail<UserDTO | null>('Image path not found');
-
-    const pathWithoutExtension = index !== -1 ? extractedPath.slice(0, index) : extractedPath;
-
-    const deleteCloudinary = await this._clodinaryUti.DeleteMediaCloudinary(
-      pathWithoutExtension,
-      resourceType,
-    );
-
-    return ResultService.ok(deleteCloudinary);
-  };
 }

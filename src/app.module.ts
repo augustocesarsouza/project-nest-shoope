@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AddressController } from './Shoope.Api/Controllers/AddressController';
 import { CategoryController } from './Shoope.Api/Controllers/CategoryController';
 import { CuponController } from './Shoope.Api/Controllers/CuponController';
+import { ProductsOfferFlashServiceController } from './Shoope.Api/Controllers/ProductsOfferFlashServiceController';
 
 @Module({
   imports: [
@@ -14,7 +15,13 @@ import { CuponController } from './Shoope.Api/Controllers/CuponController';
     }),
     ApplicationModule,
   ],
-  controllers: [UserController, AddressController, CategoryController, CuponController],
+  controllers: [
+    UserController,
+    AddressController,
+    CategoryController,
+    CuponController,
+    ProductsOfferFlashServiceController,
+  ],
   providers: [PrismaService],
 })
 export class AppModule {}

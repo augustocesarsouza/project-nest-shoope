@@ -9,4 +9,8 @@ export abstract class IClodinaryUti {
     height: number,
   ): Promise<CloudinaryCreate>;
   abstract DeleteMediaCloudinary(publicId: string, resourceType: string): Promise<CloudinaryResult>;
+  abstract DeleteFileCloudinaryExtractingPublicIdFromUrl(
+    url: string,
+    resourceType: string,
+  ): Promise<CloudinaryResult>;
 }

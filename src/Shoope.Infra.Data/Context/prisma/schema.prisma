@@ -70,3 +70,19 @@ model Cupon {
   createdAt DateTime @default(now()) // Opcional, mas útil
   updatedAt DateTime @updatedAt // Opcional, mas útil
 }
+
+model ProductsOfferFlash {
+  id                   String  @id @default(uuid())
+  imgProduct           String
+  altValue             String
+  imgPartBottom        String?
+  priceProduct         Int
+  popularityPercentage Int
+  discountPercentage   Int
+  hourFlashOffer       String
+  title                String
+  tagProduct           String
+
+  createdAt DateTime @default(now()) // Opcional, mas útil
+  updatedAt DateTime @updatedAt // Opcional, mas útil
+}
