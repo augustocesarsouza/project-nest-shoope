@@ -18,8 +18,6 @@ export class ProductsOfferFlashService implements IProductsOfferFlashService {
     private readonly _clodinaryUti: IClodinaryUti,
   ) {}
 
-  // criar novamente 'http://localhost:3000/v1/product-offer-flash/create' e depois faz o get das função para testar se funciona certo
-
   async GetAllProduct(): Promise<ResultService<ProductsOfferFlashDTO[] | null>> {
     try {
       const productsOfferFlashList = await this._productsOfferFlashRepository.GetAllProduct();
@@ -152,6 +150,8 @@ export class ProductsOfferFlashService implements IProductsOfferFlashService {
 
   async Delete(productsOfferFlashId: string): Promise<ResultService<ProductsOfferFlashDTO | null>> {
     try {
+      // quando deletar um registro aqui tem que ver se tem registro aqui "FlashSaleProductAllInfo"
+
       const productsOfferFlashForDelete =
         await this._productsOfferFlashRepository.GetByProductsOfferFlashId(productsOfferFlashId);
 

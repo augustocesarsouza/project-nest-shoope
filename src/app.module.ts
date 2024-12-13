@@ -7,6 +7,7 @@ import { AddressController } from './Shoope.Api/Controllers/AddressController';
 import { CategoryController } from './Shoope.Api/Controllers/CategoryController';
 import { CuponController } from './Shoope.Api/Controllers/CuponController';
 import { ProductsOfferFlashServiceController } from './Shoope.Api/Controllers/ProductsOfferFlashServiceController';
+import { FlashSaleProductAllInfoController } from './Shoope.Api/Controllers/FlashSaleProductAllInfoController';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ProductsOfferFlashServiceController } from './Shoope.Api/Controllers/Pr
     CategoryController,
     CuponController,
     ProductsOfferFlashServiceController,
+    FlashSaleProductAllInfoController,
   ],
   providers: [PrismaService],
 })

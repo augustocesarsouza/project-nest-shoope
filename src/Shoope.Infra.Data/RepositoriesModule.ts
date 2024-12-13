@@ -15,6 +15,8 @@ import { ICuponRepository } from 'src/Shoope.Domain/Repositories/ICuponRepositor
 import { CuponRepository } from './Repositories/CuponRepository';
 import { IProductsOfferFlashRepository } from 'src/Shoope.Domain/Repositories/IProductsOfferFlashRepository';
 import { ProductsOfferFlashRepository } from './Repositories/ProductsOfferFlashRepository';
+import { IFlashSaleProductAllInfoRepository } from 'src/Shoope.Domain/Repositories/IFlashSaleProductAllInfo';
+import { FlashSaleProductAllInfoRepository } from './Repositories/FlashSaleProductAllInfoRepository';
 
 @Module({
   imports: [ConfigModule],
@@ -41,6 +43,10 @@ import { ProductsOfferFlashRepository } from './Repositories/ProductsOfferFlashR
       useClass: ProductsOfferFlashRepository,
     },
     {
+      provide: IFlashSaleProductAllInfoRepository,
+      useClass: FlashSaleProductAllInfoRepository,
+    },
+    {
       provide: ISendEmailBrevo,
       useClass: SendEmailBrevo,
     },
@@ -57,6 +63,7 @@ import { ProductsOfferFlashRepository } from './Repositories/ProductsOfferFlashR
     IProductsOfferFlashRepository,
     ISendEmailBrevo,
     ISendEmailUser,
+    IFlashSaleProductAllInfoRepository,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })

@@ -83,6 +83,27 @@ model ProductsOfferFlash {
   title                String
   tagProduct           String
 
+  createdAt               DateTime                  @default(now()) // Opcional, mas útil
+  updatedAt               DateTime                  @updatedAt // Opcional, mas útil
+  FlashSaleProductAllInfo FlashSaleProductAllInfo[]
+}
+
+model FlashSaleProductAllInfo {
+  id                   String   @id @default(uuid())
+  productReviewsRate   Int
+  quantitySold         Int
+  favoriteQuantity     Int
+  quantityAvaliation   Int
+  coins                Int?
+  creditCard           Int?
+  voltage              String?
+  quantityPiece        Int?
+  size                 String?
+  productHaveInsurance Boolean?
+
+  productsOfferFlash   ProductsOfferFlash @relation(fields: [productsOfferFlashId], references: [id])
+  productsOfferFlashId String // Foreign key para o User
+
   createdAt DateTime @default(now()) // Opcional, mas útil
   updatedAt DateTime @updatedAt // Opcional, mas útil
 }
