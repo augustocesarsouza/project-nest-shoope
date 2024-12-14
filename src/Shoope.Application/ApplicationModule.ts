@@ -38,6 +38,10 @@ import { ILikeReviewService } from './Services/Interfaces/ILikeReviewService';
 import { LikeReviewService } from './Services/LikeReviewService';
 import { ILikeReviewMap } from './Mappings/IMappings/ILikeReviewMap';
 import { LikeReviewMap } from './Mappings/LikeReviewMap';
+import { IProductDescriptionService } from './Services/Interfaces/IProductDescriptionService';
+import { ProductDescriptionService } from './Services/ProductDescriptionService';
+import { IProductDescriptionMap } from './Mappings/IMappings/IProductDescriptionMap';
+import { ProductDescriptionMap } from './Mappings/ProductDescriptionMap';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -80,6 +84,10 @@ import { LikeReviewMap } from './Mappings/LikeReviewMap';
       useClass: LikeReviewService,
     },
     {
+      provide: IProductDescriptionService,
+      useClass: ProductDescriptionService,
+    },
+    {
       provide: IUserMap,
       useClass: UserMap,
     },
@@ -98,6 +106,10 @@ import { LikeReviewMap } from './Mappings/LikeReviewMap';
     {
       provide: ILikeReviewMap,
       useClass: LikeReviewMap,
+    },
+    {
+      provide: IProductDescriptionMap,
+      useClass: ProductDescriptionMap,
     },
     {
       provide: IFlashSaleProductAllInfoMap,
@@ -129,12 +141,14 @@ import { LikeReviewMap } from './Mappings/LikeReviewMap';
     ICategoryMap,
     ICuponMap,
     ILikeReviewMap,
+    IProductDescriptionMap,
     IFlashSaleProductAllInfoMap,
     IProductsOfferFlashMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,
     IFlashSaleProductAllInfoService,
+    IProductDescriptionService,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })
