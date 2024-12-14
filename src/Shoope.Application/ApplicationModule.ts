@@ -34,6 +34,10 @@ import { IFlashSaleProductAllInfoService } from './Services/Interfaces/IFlashSal
 import { FlashSaleProductAllInfoService } from './Services/FlashSaleProductAllInfoService';
 import { IFlashSaleProductAllInfoMap } from './Mappings/IMappings/IFlashSaleProductAllInfoMap';
 import { FlashSaleProductAllInfoMap } from './Mappings/FlashSaleProductAllInfoMap';
+import { ILikeReviewService } from './Services/Interfaces/ILikeReviewService';
+import { LikeReviewService } from './Services/LikeReviewService';
+import { ILikeReviewMap } from './Mappings/IMappings/ILikeReviewMap';
+import { LikeReviewMap } from './Mappings/LikeReviewMap';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -67,10 +71,13 @@ import { FlashSaleProductAllInfoMap } from './Mappings/FlashSaleProductAllInfoMa
       provide: IFlashSaleProductAllInfoService,
       useClass: FlashSaleProductAllInfoService,
     },
-
     {
       provide: IUserCreateAccountFunction,
       useClass: UserCreateAccountFunction,
+    },
+    {
+      provide: ILikeReviewService,
+      useClass: LikeReviewService,
     },
     {
       provide: IUserMap,
@@ -87,6 +94,10 @@ import { FlashSaleProductAllInfoMap } from './Mappings/FlashSaleProductAllInfoMa
     {
       provide: ICuponMap,
       useClass: CuponMap,
+    },
+    {
+      provide: ILikeReviewMap,
+      useClass: LikeReviewMap,
     },
     {
       provide: IFlashSaleProductAllInfoMap,
@@ -112,10 +123,12 @@ import { FlashSaleProductAllInfoMap } from './Mappings/FlashSaleProductAllInfoMa
     ICategoryService,
     ICuponService,
     IProductsOfferFlashService,
+    ILikeReviewService,
     IUserMap,
     IAddressMap,
     ICategoryMap,
     ICuponMap,
+    ILikeReviewMap,
     IFlashSaleProductAllInfoMap,
     IProductsOfferFlashMap,
     IClodinaryUti,

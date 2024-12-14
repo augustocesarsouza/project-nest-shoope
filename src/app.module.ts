@@ -8,6 +8,7 @@ import { CategoryController } from './Shoope.Api/Controllers/CategoryController'
 import { CuponController } from './Shoope.Api/Controllers/CuponController';
 import { ProductsOfferFlashServiceController } from './Shoope.Api/Controllers/ProductsOfferFlashServiceController';
 import { FlashSaleProductAllInfoController } from './Shoope.Api/Controllers/FlashSaleProductAllInfoController';
+import { LikeReviewController } from './Shoope.Api/Controllers/LikeReviewController';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { FlashSaleProductAllInfoController } from './Shoope.Api/Controllers/Flas
     CuponController,
     ProductsOfferFlashServiceController,
     FlashSaleProductAllInfoController,
+    LikeReviewController,
   ],
   providers: [PrismaService],
 })

@@ -107,3 +107,12 @@ model FlashSaleProductAllInfo {
   createdAt DateTime @default(now()) // Opcional, mas útil
   updatedAt DateTime @updatedAt // Opcional, mas útil
 }
+
+model LikeReview {
+  id                        String @id @default(uuid())
+  productFlashSaleReviewsId String
+  userId                    String
+
+  createdAt DateTime @default(now()) // Opcional, mas útil
+  updatedAt DateTime @updatedAt // Opcional, mas útil
+}
