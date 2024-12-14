@@ -9,11 +9,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { ProductsOfferFlashDTOValidateCreate } from '../DTOs/Validations/ProductsOfferFlashDTOValidate/ProductsOfferFlashDTOValidateCreate';
 import { ProductOfferFlashType } from 'src/Shoope.Domain/Enums/ProductOfferFlashType';
 import { ProductsOfferFlash } from 'src/Shoope.Domain/Entities/ProductsOfferFlash';
+import { IFlashSaleProductAllInfoService } from './Interfaces/IFlashSaleProductAllInfoService';
 
 @Injectable()
 export class ProductsOfferFlashService implements IProductsOfferFlashService {
   constructor(
     private readonly _productsOfferFlashRepository: IProductsOfferFlashRepository,
+    private readonly _flashSaleProductAllInfoService: IFlashSaleProductAllInfoService,
     private readonly _productsOfferFlashMap: IProductsOfferFlashMap,
     private readonly _clodinaryUti: IClodinaryUti,
   ) {}
@@ -165,6 +167,21 @@ export class ProductsOfferFlashService implements IProductsOfferFlashService {
 
       if (!deleteFound.deleteSuccessfully)
         return ResultService.fail<ProductsOfferFlashDTO | null>(deleteFound.message);
+
+      const allRegisterFlashSaleProductAll =
+        await this._flashSaleProductAllInfoService.CheckWhetherItExistOrNotProductsOfferFlashId(
+          productsOfferFlashForDelete.id,
+        );
+
+      if (allRegisterFlashSaleProductAll.isSuccess) {
+        const flashSaleProductAll = allRegisterFlashSaleProductAll.data;
+
+        for (let i = 0; i < flashSaleProductAll.length; i++) {
+          const element = flashSaleProductAll[i];
+
+          await this._flashSaleProductAllInfoService.Delete(element.id);
+        }
+      }
 
       const productsOfferFlashDeleteSuccessfully = await this._productsOfferFlashRepository.Delete(
         productsOfferFlashForDelete.id,

@@ -6,6 +6,9 @@ export abstract class IFlashSaleProductAllInfoService {
   abstract GetFlashSaleProductByProductFlashSaleId(
     productFlashSaleId: string,
   ): Promise<ResultService<FlashSaleProductAllInfoDTO | null>>;
+  abstract CheckWhetherItExistOrNotProductsOfferFlashId(
+    productFlashSaleId: string,
+  ): Promise<ResultService<FlashSaleProductAllInfoDTO[] | null>>;
   abstract Create(
     flashSaleProductAllInfoDTOValidateCreate: FlashSaleProductAllInfoDTOValidateCreate | null,
   ): Promise<ResultService<FlashSaleProductAllInfoDTO | null>>;

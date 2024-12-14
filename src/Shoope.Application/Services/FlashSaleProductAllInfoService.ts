@@ -38,6 +38,29 @@ export class FlashSaleProductAllInfoService implements IFlashSaleProductAllInfoS
     }
   }
 
+  async CheckWhetherItExistOrNotProductsOfferFlashId(
+    productFlashSaleId: string,
+  ): Promise<ResultService<FlashSaleProductAllInfoDTO[] | null>> {
+    try {
+      const flashSaleProductAllInfoList =
+        await this._flashSaleProductAllInfoRepository.CheckWhetherItExistOrNotProductsOfferFlashId(
+          productFlashSaleId,
+        );
+
+      if (!flashSaleProductAllInfoList) {
+        return ResultService.fail<FlashSaleProductAllInfoDTO[] | null>('no record was found');
+      }
+
+      return ResultService.ok<FlashSaleProductAllInfoDTO[]>(
+        this._flashSaleProductAllInfoMap.transformToDTOList(flashSaleProductAllInfoList),
+      );
+    } catch (error) {
+      return ResultService.fail<FlashSaleProductAllInfoDTO[] | null>(
+        error.message || 'An unexpected error occurred',
+      );
+    }
+  }
+
   async Create(
     flashSaleProductAllInfoDTOValidateCreate: FlashSaleProductAllInfoDTOValidateCreate | null,
   ): Promise<ResultService<FlashSaleProductAllInfoDTO | null>> {

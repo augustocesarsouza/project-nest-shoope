@@ -11,11 +11,11 @@ export class FlashSaleProductAllInfoRepository extends IFlashSaleProductAllInfoR
   }
 
   async GetFlashSaleProductAllInfoById(
-    productsOfferFlashId: string,
+    flashSaleProductAllInfoId: string,
   ): Promise<FlashSaleProductAllInfo | null> {
     const flashSaleProductAllInfoData = await this._prisma.flashSaleProductAllInfo.findFirst({
       where: {
-        id: productsOfferFlashId,
+        id: flashSaleProductAllInfoId,
       },
       select: {
         id: true,
@@ -43,6 +43,49 @@ export class FlashSaleProductAllInfoRepository extends IFlashSaleProductAllInfoR
     const flashSaleProductAllInfo = this.mapToEntity(flashSaleProductAllInfoData);
 
     return flashSaleProductAllInfo;
+  }
+
+  async CheckWhetherItExistOrNotProductsOfferFlashId(
+    productsOfferFlashId: string,
+  ): Promise<FlashSaleProductAllInfo[] | null> {
+    const flashSaleProductAllInfoData = await this._prisma.flashSaleProductAllInfo.findMany({
+      where: {
+        productsOfferFlashId: productsOfferFlashId,
+      },
+      select: {
+        id: true,
+        productsOfferFlashId: false,
+        productReviewsRate: false,
+        quantitySold: true,
+        favoriteQuantity: false,
+        quantityAvaliation: false,
+        coins: false,
+        creditCard: false,
+        voltage: false,
+        quantityPiece: false,
+        size: false,
+        productHaveInsurance: false,
+        productsOfferFlash: false,
+        createdAt: false,
+        updatedAt: false,
+      },
+    });
+
+    if (!flashSaleProductAllInfoData) {
+      return null;
+    }
+
+    const flashSaleProductAllInfo: FlashSaleProductAllInfo[] = [];
+
+    for (let i = 0; i < flashSaleProductAllInfoData.length; i++) {
+      flashSaleProductAllInfo.push(this.mapToEntity(flashSaleProductAllInfoData[i]));
+    }
+
+    return flashSaleProductAllInfo;
+
+    // const flashSaleProductAllInfo = this.mapToEntity(flashSaleProductAllInfoData);
+
+    // return flashSaleProductAllInfo;
   }
 
   async GetFlashSaleProductByProductFlashSaleId(

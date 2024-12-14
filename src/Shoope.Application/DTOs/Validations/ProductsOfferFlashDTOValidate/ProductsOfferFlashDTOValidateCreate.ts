@@ -13,6 +13,7 @@ export class ProductsOfferFlashDTOValidateCreate {
   @IsNotEmpty()
   @Min(0, { message: 'popularityPercentage must be greater than or equal to 0' })
   popularityPercentage?: number;
+  @IsNotEmpty()
   discountPercentage?: number;
   @IsNotEmpty()
   hourFlashOffer?: string;

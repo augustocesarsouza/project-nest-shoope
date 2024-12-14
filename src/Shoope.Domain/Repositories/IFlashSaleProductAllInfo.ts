@@ -2,8 +2,11 @@ import { FlashSaleProductAllInfo } from '../Entities/FlashSaleProductAllInfo';
 
 export abstract class IFlashSaleProductAllInfoRepository {
   abstract GetFlashSaleProductAllInfoById(
-    productsOfferFlashId: string,
+    flashSaleProductAllInfoId: string,
   ): Promise<FlashSaleProductAllInfo | null>;
+  abstract CheckWhetherItExistOrNotProductsOfferFlashId(
+    productsOfferFlashId: string,
+  ): Promise<FlashSaleProductAllInfo[] | null>;
   abstract GetFlashSaleProductByProductFlashSaleId(
     productFlashSaleId: string,
   ): Promise<FlashSaleProductAllInfo | null>;
