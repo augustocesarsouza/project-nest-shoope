@@ -45,7 +45,11 @@ import { ProductDescriptionMap } from './Mappings/ProductDescriptionMap';
 import { IProductDetailService } from './Services/Interfaces/IProductDetailService';
 import { ProductDetailService } from './Services/ProductDetailService';
 import { IProductDetailMap } from './Mappings/IMappings/IProductDetailMap';
+import { IProductDiscoveriesOfDayMap } from './Mappings/IMappings/IProductDiscoveriesOfDayMap';
+import { ProductDiscoveriesOfDayMap } from './Mappings/ProductDiscoveriesOfDayMap';
 import { ProductDetailMap } from './Mappings/ProductDetailMap';
+import { IProductDiscoveriesOfDayService } from './Services/Interfaces/IProductDiscoveriesOfDayService';
+import { ProductDiscoveriesOfDayService } from './Services/ProductDiscoveriesOfDayService';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -86,6 +90,10 @@ import { ProductDetailMap } from './Mappings/ProductDetailMap';
     {
       provide: ILikeReviewService,
       useClass: LikeReviewService,
+    },
+    {
+      provide: IProductDiscoveriesOfDayService,
+      useClass: ProductDiscoveriesOfDayService,
     },
     {
       provide: IProductDescriptionService,
@@ -132,6 +140,11 @@ import { ProductDetailMap } from './Mappings/ProductDetailMap';
       useClass: ProductsOfferFlashMap,
     },
     {
+      provide: IProductDiscoveriesOfDayMap,
+      useClass: ProductDiscoveriesOfDayMap,
+    },
+
+    {
       provide: IClodinaryUti,
       useClass: ClodinaryUti,
     },
@@ -148,6 +161,7 @@ import { ProductDetailMap } from './Mappings/ProductDetailMap';
     ICuponService,
     IProductsOfferFlashService,
     ILikeReviewService,
+    IProductDiscoveriesOfDayService,
     IUserMap,
     IAddressMap,
     ICategoryMap,
@@ -157,6 +171,7 @@ import { ProductDetailMap } from './Mappings/ProductDetailMap';
     IProductDescriptionMap,
     IFlashSaleProductAllInfoMap,
     IProductsOfferFlashMap,
+    IProductDiscoveriesOfDayMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,

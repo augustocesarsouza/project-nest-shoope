@@ -108,7 +108,10 @@ export class LikeReviewRepository extends ILikeReviewRepository {
   }
 
   async Update(entity: LikeReview): Promise<LikeReview | null> {
-    const entityData = await this._prisma.likeReview.create({
+    const entityData = await this._prisma.likeReview.update({
+      where: {
+        id: entity.id,
+      },
       data: {
         productFlashSaleReviewsId: entity.productFlashSaleReviewsId,
         userId: entity.userId,

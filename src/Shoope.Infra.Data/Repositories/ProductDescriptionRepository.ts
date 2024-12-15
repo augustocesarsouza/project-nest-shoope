@@ -79,7 +79,10 @@ export class ProductDescriptionRepository extends IProductDescriptionRepository 
   }
 
   async Update(entity: ProductDescription): Promise<ProductDescription | null> {
-    const entityData = await this._prisma.productDescription.create({
+    const entityData = await this._prisma.productDescription.update({
+      where: {
+        id: entity.id,
+      },
       data: {
         description: entity.description,
         characteristics: entity.characteristics,

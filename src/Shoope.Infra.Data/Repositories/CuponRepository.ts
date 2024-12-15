@@ -63,7 +63,10 @@ export class CuponRepository extends ICuponRepository {
   }
 
   async Update(entity: Cupon): Promise<Cupon | null> {
-    const cuponData = await this._prisma.cupon.create({
+    const cuponData = await this._prisma.cupon.update({
+      where: {
+        id: entity.id,
+      },
       data: {
         firstText: entity.firstText,
         secondText: entity.secondText,

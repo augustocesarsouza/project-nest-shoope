@@ -184,7 +184,10 @@ export class FlashSaleProductAllInfoRepository extends IFlashSaleProductAllInfoR
   }
 
   async Update(entity: FlashSaleProductAllInfo): Promise<FlashSaleProductAllInfo | null> {
-    const flashSaleProductAllInfoData = await this._prisma.flashSaleProductAllInfo.create({
+    const flashSaleProductAllInfoData = await this._prisma.flashSaleProductAllInfo.update({
+      where: {
+        id: entity.id,
+      },
       data: {
         productsOfferFlashId: entity.productsOfferFlashId,
         productReviewsRate: entity.productReviewsRate,

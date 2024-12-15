@@ -23,6 +23,8 @@ import { IProductDescriptionRepository } from 'src/Shoope.Domain/Repositories/IP
 import { ProductDescriptionRepository } from './Repositories/ProductDescriptionRepository';
 import { IProductDetailRepository } from 'src/Shoope.Domain/Repositories/IProductDetailRepository';
 import { ProductDetailRepository } from './Repositories/ProductDetailRepository';
+import { IProductDiscoveriesOfDayRepository } from 'src/Shoope.Domain/Repositories/IProductDiscoveriesOfDayRepository';
+import { ProductDiscoveriesOfDayRepository } from './Repositories/ProductDiscoveriesOfDayRepository';
 
 @Module({
   imports: [ConfigModule],
@@ -51,6 +53,10 @@ import { ProductDetailRepository } from './Repositories/ProductDetailRepository'
     {
       provide: IProductDetailRepository,
       useClass: ProductDetailRepository,
+    },
+    {
+      provide: IProductDiscoveriesOfDayRepository,
+      useClass: ProductDiscoveriesOfDayRepository,
     },
     {
       provide: IFlashSaleProductAllInfoRepository,
@@ -85,6 +91,7 @@ import { ProductDetailRepository } from './Repositories/ProductDetailRepository'
     ILikeReviewRepository,
     IProductDescriptionRepository,
     IProductDetailRepository,
+    IProductDiscoveriesOfDayRepository,
   ],
 })
 export class RepositoriesModule {}

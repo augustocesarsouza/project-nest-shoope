@@ -140,7 +140,10 @@ export class ProductsOfferFlashRepository extends IProductsOfferFlashRepository 
   }
 
   async Update(entity: ProductsOfferFlash): Promise<ProductsOfferFlash | null> {
-    const productsOfferFlashData = await this._prisma.productsOfferFlash.create({
+    const productsOfferFlashData = await this._prisma.productsOfferFlash.update({
+      where: {
+        id: entity.id,
+      },
       data: {
         imgProduct: entity.imgProduct,
         altValue: entity.altValue,

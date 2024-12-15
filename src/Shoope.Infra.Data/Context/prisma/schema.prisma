@@ -145,3 +145,17 @@ model ProductDetail {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model ProductDiscoveriesOfDay {
+  id                 String  @id @default(uuid())
+  title              String
+  imgProduct         String
+  imgPartBottom      String?
+  discountPercentage Int?
+  isAd               Boolean
+  price              Int
+  quantitySold       Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
