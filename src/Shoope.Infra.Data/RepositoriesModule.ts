@@ -21,6 +21,8 @@ import { ILikeReviewRepository } from 'src/Shoope.Domain/Repositories/ILikeRevie
 import { LikeReviewRepository } from './Repositories/LikeReviewRepository';
 import { IProductDescriptionRepository } from 'src/Shoope.Domain/Repositories/IProductDescriptionRepository';
 import { ProductDescriptionRepository } from './Repositories/ProductDescriptionRepository';
+import { IProductDetailRepository } from 'src/Shoope.Domain/Repositories/IProductDetailRepository';
+import { ProductDetailRepository } from './Repositories/ProductDetailRepository';
 
 @Module({
   imports: [ConfigModule],
@@ -45,6 +47,10 @@ import { ProductDescriptionRepository } from './Repositories/ProductDescriptionR
     {
       provide: IProductsOfferFlashRepository,
       useClass: ProductsOfferFlashRepository,
+    },
+    {
+      provide: IProductDetailRepository,
+      useClass: ProductDetailRepository,
     },
     {
       provide: IFlashSaleProductAllInfoRepository,
@@ -78,6 +84,7 @@ import { ProductDescriptionRepository } from './Repositories/ProductDescriptionR
     IFlashSaleProductAllInfoRepository,
     ILikeReviewRepository,
     IProductDescriptionRepository,
+    IProductDetailRepository,
   ],
 })
 export class RepositoriesModule {}

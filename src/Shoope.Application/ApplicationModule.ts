@@ -42,6 +42,10 @@ import { IProductDescriptionService } from './Services/Interfaces/IProductDescri
 import { ProductDescriptionService } from './Services/ProductDescriptionService';
 import { IProductDescriptionMap } from './Mappings/IMappings/IProductDescriptionMap';
 import { ProductDescriptionMap } from './Mappings/ProductDescriptionMap';
+import { IProductDetailService } from './Services/Interfaces/IProductDetailService';
+import { ProductDetailService } from './Services/ProductDetailService';
+import { IProductDetailMap } from './Mappings/IMappings/IProductDetailMap';
+import { ProductDetailMap } from './Mappings/ProductDetailMap';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -88,6 +92,10 @@ import { ProductDescriptionMap } from './Mappings/ProductDescriptionMap';
       useClass: ProductDescriptionService,
     },
     {
+      provide: IProductDetailService,
+      useClass: ProductDetailService,
+    },
+    {
       provide: IUserMap,
       useClass: UserMap,
     },
@@ -106,6 +114,10 @@ import { ProductDescriptionMap } from './Mappings/ProductDescriptionMap';
     {
       provide: ILikeReviewMap,
       useClass: LikeReviewMap,
+    },
+    {
+      provide: IProductDetailMap,
+      useClass: ProductDetailMap,
     },
     {
       provide: IProductDescriptionMap,
@@ -141,6 +153,7 @@ import { ProductDescriptionMap } from './Mappings/ProductDescriptionMap';
     ICategoryMap,
     ICuponMap,
     ILikeReviewMap,
+    IProductDetailMap,
     IProductDescriptionMap,
     IFlashSaleProductAllInfoMap,
     IProductsOfferFlashMap,
@@ -149,6 +162,7 @@ import { ProductDescriptionMap } from './Mappings/ProductDescriptionMap';
     IAddressService,
     IFlashSaleProductAllInfoService,
     IProductDescriptionService,
+    IProductDetailService,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })
