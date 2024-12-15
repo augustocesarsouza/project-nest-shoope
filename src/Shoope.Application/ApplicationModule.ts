@@ -50,6 +50,10 @@ import { ProductDiscoveriesOfDayMap } from './Mappings/ProductDiscoveriesOfDayMa
 import { ProductDetailMap } from './Mappings/ProductDetailMap';
 import { IProductDiscoveriesOfDayService } from './Services/Interfaces/IProductDiscoveriesOfDayService';
 import { ProductDiscoveriesOfDayService } from './Services/ProductDiscoveriesOfDayService';
+import { IProductFlashSaleReviewsService } from './Services/Interfaces/IProductFlashSaleReviewsService';
+import { ProductFlashSaleReviewsService } from './Services/ProductFlashSaleReviewsService';
+import { IProductFlashSaleReviewsMap } from './Mappings/IMappings/IProductFlashSaleReviewsMap';
+import { ProductFlashSaleReviewsMap } from './Mappings/ProductFlashSaleReviewsMap';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -104,6 +108,10 @@ import { ProductDiscoveriesOfDayService } from './Services/ProductDiscoveriesOfD
       useClass: ProductDetailService,
     },
     {
+      provide: IProductFlashSaleReviewsService,
+      useClass: ProductFlashSaleReviewsService,
+    },
+    {
       provide: IUserMap,
       useClass: UserMap,
     },
@@ -126,6 +134,10 @@ import { ProductDiscoveriesOfDayService } from './Services/ProductDiscoveriesOfD
     {
       provide: IProductDetailMap,
       useClass: ProductDetailMap,
+    },
+    {
+      provide: IProductFlashSaleReviewsMap,
+      useClass: ProductFlashSaleReviewsMap,
     },
     {
       provide: IProductDescriptionMap,
@@ -172,12 +184,14 @@ import { ProductDiscoveriesOfDayService } from './Services/ProductDiscoveriesOfD
     IFlashSaleProductAllInfoMap,
     IProductsOfferFlashMap,
     IProductDiscoveriesOfDayMap,
+    IProductFlashSaleReviewsMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,
     IFlashSaleProductAllInfoService,
     IProductDescriptionService,
     IProductDetailService,
+    IProductFlashSaleReviewsService,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })
