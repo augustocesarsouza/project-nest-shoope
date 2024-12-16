@@ -31,6 +31,10 @@ import { IProductHighlightRepository } from 'src/Shoope.Domain/Repositories/IPro
 import { ProductHighlightRepository } from './Repositories/ProductHighlightRepository';
 import { IProductOptionImageRepository } from 'src/Shoope.Domain/Repositories/IProductOptionImageRepository';
 import { ProductOptionImageRepository } from './Repositories/ProductOptionImageRepository';
+import { IProductSellerRepository } from 'src/Shoope.Domain/Repositories/IProductSellerRepository';
+import { ProductSellerRepository } from './Repositories/ProductSellerRepository';
+import { IUserSellerProductRepository } from 'src/Shoope.Domain/Repositories/IUserSellerProductRepository';
+import { UserSellerProductRepository } from './Repositories/UserSellerProductRepository';
 
 @Module({
   imports: [ConfigModule],
@@ -89,6 +93,14 @@ import { ProductOptionImageRepository } from './Repositories/ProductOptionImageR
       useClass: ProductOptionImageRepository,
     },
     {
+      provide: IProductSellerRepository,
+      useClass: ProductSellerRepository,
+    },
+    {
+      provide: IUserSellerProductRepository,
+      useClass: UserSellerProductRepository,
+    },
+    {
       provide: ISendEmailBrevo,
       useClass: SendEmailBrevo,
     },
@@ -113,6 +125,8 @@ import { ProductOptionImageRepository } from './Repositories/ProductOptionImageR
     IProductFlashSaleReviewsRepository,
     IProductHighlightRepository,
     IProductOptionImageRepository,
+    IUserSellerProductRepository,
+    IProductSellerRepository,
   ],
 })
 export class RepositoriesModule {}

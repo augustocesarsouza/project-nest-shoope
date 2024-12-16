@@ -200,3 +200,31 @@ model ProductOptionImage {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model ProductSeller {
+  id                  String            @id @default(uuid())
+  productId           String
+  userSellerProductId String
+  userSellerProduct   UserSellerProduct @relation(fields: [userSellerProductId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserSellerProduct {
+  id                      String    @id @default(uuid())
+  name                    String
+  imgPerfil               String
+  imgFloating             String?
+  lastLogin               DateTime?
+  reviews                 Int?
+  chatResponseRate        Int?
+  accountCreationDate     DateTime
+  quantityOfProductSold   Int?
+  usuallyRespondsToChatIn String?
+  followers               Int?
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  ProductSeller ProductSeller[]
+}

@@ -62,6 +62,14 @@ import { IProductOptionImageMap } from './Mappings/IMappings/IProductOptionImage
 import { ProductOptionImageMap } from './Mappings/ProductOptionImageMap';
 import { IProductOptionImageService } from './Services/Interfaces/IProductOptionImageService';
 import { ProductOptionImageService } from './Services/ProductOptionImageService';
+import { IProductSellerService } from './Services/Interfaces/IProductSellerService';
+import { ProductSellerService } from './Services/ProductSellerService';
+import { IProductSellerMap } from './Mappings/IMappings/IProductSellerMap';
+import { ProductSellerMap } from './Mappings/ProductSellerMap';
+import { IUserSellerProductMap } from './Mappings/IMappings/IUserSellerProductMap';
+import { UserSellerProductMap } from './Mappings/UserSellerProductMap';
+import { IUserSellerProductService } from './Services/Interfaces/IUserSellerProductService';
+import { UserSellerProductService } from './Services/UserSellerProductService';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -128,6 +136,14 @@ import { ProductOptionImageService } from './Services/ProductOptionImageService'
       useClass: ProductOptionImageService,
     },
     {
+      provide: IProductSellerService,
+      useClass: ProductSellerService,
+    },
+    {
+      provide: IUserSellerProductService,
+      useClass: UserSellerProductService,
+    },
+    {
       provide: IUserMap,
       useClass: UserMap,
     },
@@ -180,6 +196,14 @@ import { ProductOptionImageService } from './Services/ProductOptionImageService'
       useClass: ProductOptionImageMap,
     },
     {
+      provide: IProductSellerMap,
+      useClass: ProductSellerMap,
+    },
+    {
+      provide: IUserSellerProductMap,
+      useClass: UserSellerProductMap,
+    },
+    {
       provide: IClodinaryUti,
       useClass: ClodinaryUti,
     },
@@ -210,6 +234,8 @@ import { ProductOptionImageService } from './Services/ProductOptionImageService'
     IProductFlashSaleReviewsMap,
     IProductHighlightMap,
     IProductOptionImageMap,
+    IProductSellerMap,
+    IUserSellerProductMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,
@@ -219,6 +245,8 @@ import { ProductOptionImageService } from './Services/ProductOptionImageService'
     IProductFlashSaleReviewsService,
     IProductHighlightService,
     IProductOptionImageService,
+    IProductSellerService,
+    IUserSellerProductService,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })
