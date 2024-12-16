@@ -58,6 +58,10 @@ import { IProductHighlightMap } from './Mappings/IMappings/IProductHighlightMap'
 import { ProductHighlightMap } from './Mappings/ProductHighlightMap';
 import { IProductHighlightService } from './Services/Interfaces/IProductHighlightService';
 import { ProductHighlightService } from './Services/ProductHighlightService';
+import { IProductOptionImageMap } from './Mappings/IMappings/IProductOptionImageMap';
+import { ProductOptionImageMap } from './Mappings/ProductOptionImageMap';
+import { IProductOptionImageService } from './Services/Interfaces/IProductOptionImageService';
+import { ProductOptionImageService } from './Services/ProductOptionImageService';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -120,6 +124,10 @@ import { ProductHighlightService } from './Services/ProductHighlightService';
       useClass: ProductHighlightService,
     },
     {
+      provide: IProductOptionImageService,
+      useClass: ProductOptionImageService,
+    },
+    {
       provide: IUserMap,
       useClass: UserMap,
     },
@@ -168,6 +176,10 @@ import { ProductHighlightService } from './Services/ProductHighlightService';
       useClass: ProductHighlightMap,
     },
     {
+      provide: IProductOptionImageMap,
+      useClass: ProductOptionImageMap,
+    },
+    {
       provide: IClodinaryUti,
       useClass: ClodinaryUti,
     },
@@ -197,6 +209,7 @@ import { ProductHighlightService } from './Services/ProductHighlightService';
     IProductDiscoveriesOfDayMap,
     IProductFlashSaleReviewsMap,
     IProductHighlightMap,
+    IProductOptionImageMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,
@@ -205,6 +218,7 @@ import { ProductHighlightService } from './Services/ProductHighlightService';
     IProductDetailService,
     IProductFlashSaleReviewsService,
     IProductHighlightService,
+    IProductOptionImageService,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })
