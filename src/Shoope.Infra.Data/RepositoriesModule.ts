@@ -27,6 +27,8 @@ import { IProductDiscoveriesOfDayRepository } from 'src/Shoope.Domain/Repositori
 import { ProductDiscoveriesOfDayRepository } from './Repositories/ProductDiscoveriesOfDayRepository';
 import { IProductFlashSaleReviewsRepository } from 'src/Shoope.Domain/Repositories/IProductFlashSaleReviewsRepository';
 import { ProductFlashSaleReviewsRepository } from './Repositories/ProductFlashSaleReviewsRepository';
+import { IProductHighlightRepository } from 'src/Shoope.Domain/Repositories/IProductHighlightRepository';
+import { ProductHighlightRepository } from './Repositories/ProductHighlightRepository';
 
 @Module({
   imports: [ConfigModule],
@@ -77,6 +79,10 @@ import { ProductFlashSaleReviewsRepository } from './Repositories/ProductFlashSa
       useClass: ProductFlashSaleReviewsRepository,
     },
     {
+      provide: IProductHighlightRepository,
+      useClass: ProductHighlightRepository,
+    },
+    {
       provide: ISendEmailBrevo,
       useClass: SendEmailBrevo,
     },
@@ -99,6 +105,7 @@ import { ProductFlashSaleReviewsRepository } from './Repositories/ProductFlashSa
     IProductDetailRepository,
     IProductDiscoveriesOfDayRepository,
     IProductFlashSaleReviewsRepository,
+    IProductHighlightRepository,
   ],
 })
 export class RepositoriesModule {}

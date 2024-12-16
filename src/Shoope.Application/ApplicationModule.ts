@@ -54,6 +54,10 @@ import { IProductFlashSaleReviewsService } from './Services/Interfaces/IProductF
 import { ProductFlashSaleReviewsService } from './Services/ProductFlashSaleReviewsService';
 import { IProductFlashSaleReviewsMap } from './Mappings/IMappings/IProductFlashSaleReviewsMap';
 import { ProductFlashSaleReviewsMap } from './Mappings/ProductFlashSaleReviewsMap';
+import { IProductHighlightMap } from './Mappings/IMappings/IProductHighlightMap';
+import { ProductHighlightMap } from './Mappings/ProductHighlightMap';
+import { IProductHighlightService } from './Services/Interfaces/IProductHighlightService';
+import { ProductHighlightService } from './Services/ProductHighlightService';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -112,6 +116,10 @@ import { ProductFlashSaleReviewsMap } from './Mappings/ProductFlashSaleReviewsMa
       useClass: ProductFlashSaleReviewsService,
     },
     {
+      provide: IProductHighlightService,
+      useClass: ProductHighlightService,
+    },
+    {
       provide: IUserMap,
       useClass: UserMap,
     },
@@ -155,7 +163,10 @@ import { ProductFlashSaleReviewsMap } from './Mappings/ProductFlashSaleReviewsMa
       provide: IProductDiscoveriesOfDayMap,
       useClass: ProductDiscoveriesOfDayMap,
     },
-
+    {
+      provide: IProductHighlightMap,
+      useClass: ProductHighlightMap,
+    },
     {
       provide: IClodinaryUti,
       useClass: ClodinaryUti,
@@ -185,6 +196,7 @@ import { ProductFlashSaleReviewsMap } from './Mappings/ProductFlashSaleReviewsMa
     IProductsOfferFlashMap,
     IProductDiscoveriesOfDayMap,
     IProductFlashSaleReviewsMap,
+    IProductHighlightMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,
@@ -192,6 +204,7 @@ import { ProductFlashSaleReviewsMap } from './Mappings/ProductFlashSaleReviewsMa
     IProductDescriptionService,
     IProductDetailService,
     IProductFlashSaleReviewsService,
+    IProductHighlightService,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })

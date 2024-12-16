@@ -13,6 +13,7 @@ import { ProductDescriptionController } from './Shoope.Api/Controllers/ProductDe
 import { ProductDetailController } from './Shoope.Api/Controllers/ProductDetailController';
 import { ProductDiscoveriesOfDayController } from './Shoope.Api/Controllers/ProductDiscoveriesOfDayController';
 import { ProductFlashSaleReviewsController } from './Shoope.Api/Controllers/ProductFlashSaleReviewsController';
+import { ProductHighlightController } from './Shoope.Api/Controllers/ProductHighlightController';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ProductFlashSaleReviewsController } from './Shoope.Api/Controllers/Prod
     ProductDetailController,
     ProductDiscoveriesOfDayController,
     ProductFlashSaleReviewsController,
+    ProductHighlightController,
   ],
   providers: [PrismaService],
 })

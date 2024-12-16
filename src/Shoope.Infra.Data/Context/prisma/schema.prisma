@@ -177,3 +177,14 @@ model ProductFlashSaleReviews {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model ProductHighlight {
+  id           String @id @default(uuid())
+  title        String
+  imgProduct   String
+  imgTop       String
+  quantitySold Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
