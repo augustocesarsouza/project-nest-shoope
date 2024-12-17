@@ -39,6 +39,8 @@ import { IPromotionRepository } from 'src/Shoope.Domain/Repositories/IPromotionR
 import { PromotionRepository } from './Repositories/PromotionRepository';
 import { IPromotionUserRepository } from 'src/Shoope.Domain/Repositories/IPromotionUserRepository';
 import { PromotionUserRepository } from './Repositories/PromotionUserRepository';
+import { UserCuponRepository } from './Repositories/UserCuponRepository';
+import { IUserCuponRepository } from 'src/Shoope.Domain/Repositories/IUserCuponRepository';
 
 @Module({
   imports: [ConfigModule],
@@ -113,6 +115,10 @@ import { PromotionUserRepository } from './Repositories/PromotionUserRepository'
       useClass: PromotionUserRepository,
     },
     {
+      provide: IUserCuponRepository,
+      useClass: UserCuponRepository,
+    },
+    {
       provide: ISendEmailBrevo,
       useClass: SendEmailBrevo,
     },
@@ -141,6 +147,7 @@ import { PromotionUserRepository } from './Repositories/PromotionUserRepository'
     IProductSellerRepository,
     IPromotionRepository,
     IPromotionUserRepository,
+    IUserCuponRepository,
   ],
 })
 export class RepositoriesModule {}

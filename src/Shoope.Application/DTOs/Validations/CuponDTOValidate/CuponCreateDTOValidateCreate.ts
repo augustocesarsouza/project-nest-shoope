@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, Matches, MaxLength } from 'class-validator';
+import { IsNotEmpty, Matches, Max, Min } from 'class-validator';
 
 export class CuponCreateDTOValidateCreate {
   id: string;
@@ -14,9 +14,10 @@ export class CuponCreateDTOValidateCreate {
   })
   DateValidateCuponString?: string;
   dateValidateCupon?: Date;
-  @MaxLength(0)
+  @Min(0)
   quantityCupons?: number;
-  @Length(2, 6, { message: 'whatCuponNumber must be between 2 and 6' })
+  @Min(2, { message: 'whatCuponNumber Min 2' })
+  @Max(6, { message: 'whatCuponNumber Max 6' })
   whatCuponNumber?: number;
   secondImg?: string;
   secondImgAlt?: string;

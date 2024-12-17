@@ -27,6 +27,7 @@ model User {
   Address                 Address[]
   ProductFlashSaleReviews ProductFlashSaleReviews[]
   PromotionUser           PromotionUser[]
+  UserCupon               UserCupon[]
 }
 
 model Address {
@@ -69,8 +70,9 @@ model Cupon {
   secondImg         String?
   secondImgAlt      String?
 
-  createdAt DateTime @default(now()) // Opcional, mas útil
-  updatedAt DateTime @updatedAt // Opcional, mas útil
+  createdAt DateTime    @default(now()) // Opcional, mas útil
+  updatedAt DateTime    @updatedAt // Opcional, mas útil
+  UserCupon UserCupon[]
 }
 
 model ProductsOfferFlash {
@@ -255,6 +257,17 @@ model PromotionUser {
   promotion   Promotion @relation(fields: [promotionId], references: [id])
   userId      String
   user        User      @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserCupon {
+  id      String @id @default(uuid())
+  cuponId String
+  cupon   Cupon  @relation(fields: [cuponId], references: [id])
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

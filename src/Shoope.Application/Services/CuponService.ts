@@ -48,7 +48,7 @@ export class CuponService implements ICuponService {
       const cupon = new Cupon(
         id,
         cuponCreateDTOValidateCreate.firstText,
-        cuponCreateDTOValidateCreate.secondImg,
+        cuponCreateDTOValidateCreate.secondText,
         cuponCreateDTOValidateCreate.thirdText,
         dateValidateCupon,
         cuponCreateDTOValidateCreate.quantityCupons,

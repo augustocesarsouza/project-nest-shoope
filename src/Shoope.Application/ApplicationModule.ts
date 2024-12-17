@@ -78,6 +78,10 @@ import { IPromotionUserService } from './Services/Interfaces/IPromotionUserServi
 import { PromotionUserService } from './Services/PromotionUserService';
 import { IPromotionUserMap } from './Mappings/IMappings/IPromotionUserMap';
 import { PromotionUserMap } from './Mappings/PromotionUserMap';
+import { IUserCuponMap } from './Mappings/IMappings/IUserCuponMap';
+import { UserCuponMap } from './Mappings/UserCuponMap';
+import { IUserCuponService } from './Services/Interfaces/IUserCuponService';
+import { UserCuponService } from './Services/UserCuponService';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -150,6 +154,10 @@ import { PromotionUserMap } from './Mappings/PromotionUserMap';
     {
       provide: IUserSellerProductService,
       useClass: UserSellerProductService,
+    },
+    {
+      provide: IUserCuponService,
+      useClass: UserCuponService,
     },
     {
       provide: IPromotionService,
@@ -228,6 +236,10 @@ import { PromotionUserMap } from './Mappings/PromotionUserMap';
       useClass: PromotionUserMap,
     },
     {
+      provide: IUserCuponMap,
+      useClass: UserCuponMap,
+    },
+    {
       provide: IClodinaryUti,
       useClass: ClodinaryUti,
     },
@@ -264,6 +276,7 @@ import { PromotionUserMap } from './Mappings/PromotionUserMap';
     IUserSellerProductMap,
     IPromotionMap,
     IPromotionUserMap,
+    IUserCuponMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,
@@ -275,6 +288,7 @@ import { PromotionUserMap } from './Mappings/PromotionUserMap';
     IProductOptionImageService,
     IProductSellerService,
     IUserSellerProductService,
+    IUserCuponService,
     // Exporte outros repositórios aqui, caso necessário
   ],
 })
