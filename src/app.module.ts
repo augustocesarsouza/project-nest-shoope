@@ -17,6 +17,8 @@ import { ProductHighlightController } from './Shoope.Api/Controllers/ProductHigh
 import { ProductOptionImageController } from './Shoope.Api/Controllers/ProductOptionImageController';
 import { ProductSellerController } from './Shoope.Api/Controllers/ProductSellerController';
 import { UserSellerProductController } from './Shoope.Api/Controllers/UserSellerProductController';
+import { PromotionController } from './Shoope.Api/Controllers/PromotionController';
+import { PromotionUserController } from './Shoope.Api/Controllers/PromotionUserController';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { UserSellerProductController } from './Shoope.Api/Controllers/UserSeller
     ProductOptionImageController,
     ProductSellerController,
     UserSellerProductController,
+    PromotionController,
+    PromotionUserController,
   ],
   providers: [PrismaService],
 })

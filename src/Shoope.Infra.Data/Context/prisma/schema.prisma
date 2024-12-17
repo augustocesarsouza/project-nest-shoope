@@ -26,6 +26,7 @@ model User {
   userImage               String?
   Address                 Address[]
   ProductFlashSaleReviews ProductFlashSaleReviews[]
+  PromotionUser           PromotionUser[]
 }
 
 model Address {
@@ -227,4 +228,34 @@ model UserSellerProduct {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   ProductSeller ProductSeller[]
+}
+
+model Promotion {
+  id                 String   @id @default(uuid())
+  whatIsThePromotion Int
+  title              String
+  description        String
+  date               DateTime
+  img                String
+  imgInnerFirst      String?
+  altImgInnerFirst   String?
+  imgInnerSecond     String?
+  altImgInnerSecond  String?
+  imgInnerThird      String?
+  altImgInnerThird   String?
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  PromotionUser PromotionUser[]
+}
+
+model PromotionUser {
+  id          String    @id @default(uuid())
+  promotionId String
+  promotion   Promotion @relation(fields: [promotionId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

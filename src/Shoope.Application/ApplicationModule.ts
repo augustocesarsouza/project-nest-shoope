@@ -70,6 +70,14 @@ import { IUserSellerProductMap } from './Mappings/IMappings/IUserSellerProductMa
 import { UserSellerProductMap } from './Mappings/UserSellerProductMap';
 import { IUserSellerProductService } from './Services/Interfaces/IUserSellerProductService';
 import { UserSellerProductService } from './Services/UserSellerProductService';
+import { IPromotionMap } from './Mappings/IMappings/IPromotionMap';
+import { PromotionMap } from './Mappings/PromotionMap';
+import { PromotionService } from './Services/PromotionService';
+import { IPromotionService } from './Services/Interfaces/IPromotionService';
+import { IPromotionUserService } from './Services/Interfaces/IPromotionUserService';
+import { PromotionUserService } from './Services/PromotionUserService';
+import { IPromotionUserMap } from './Mappings/IMappings/IPromotionUserMap';
+import { PromotionUserMap } from './Mappings/PromotionUserMap';
 
 @Module({
   imports: [RepositoriesModule, ConfigModule],
@@ -144,6 +152,14 @@ import { UserSellerProductService } from './Services/UserSellerProductService';
       useClass: UserSellerProductService,
     },
     {
+      provide: IPromotionService,
+      useClass: PromotionService,
+    },
+    {
+      provide: IPromotionUserService,
+      useClass: PromotionUserService,
+    },
+    {
       provide: IUserMap,
       useClass: UserMap,
     },
@@ -204,6 +220,14 @@ import { UserSellerProductService } from './Services/UserSellerProductService';
       useClass: UserSellerProductMap,
     },
     {
+      provide: IPromotionMap,
+      useClass: PromotionMap,
+    },
+    {
+      provide: IPromotionUserMap,
+      useClass: PromotionUserMap,
+    },
+    {
       provide: IClodinaryUti,
       useClass: ClodinaryUti,
     },
@@ -221,6 +245,8 @@ import { UserSellerProductService } from './Services/UserSellerProductService';
     IProductsOfferFlashService,
     ILikeReviewService,
     IProductDiscoveriesOfDayService,
+    IPromotionService,
+    IPromotionUserService,
     IUserMap,
     IAddressMap,
     ICategoryMap,
@@ -236,6 +262,8 @@ import { UserSellerProductService } from './Services/UserSellerProductService';
     IProductOptionImageMap,
     IProductSellerMap,
     IUserSellerProductMap,
+    IPromotionMap,
+    IPromotionUserMap,
     IClodinaryUti,
     ITokenGeneratorUser,
     IAddressService,
